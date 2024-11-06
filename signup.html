@@ -20,9 +20,9 @@
         <div class="card-body register-card-body">
             <p class="login-box-msg">Register a new membership</p>
 
-            <form onsubmit="register(event)">
+            <form id="signupForm">
                 <div class="input-group mb-3">
-                    <input type="text" class="form-control" placeholder="Full name" required>
+                    <input type="text" id="fullName" class="form-control" placeholder="Full name" required>
                     <div class="input-group-append">
                         <div class="input-group-text">
                             <span class="fas fa-user"></span>
@@ -30,7 +30,7 @@
                     </div>
                 </div>
                 <div class="input-group mb-3">
-                    <input type="email" class="form-control" placeholder="Email" required>
+                    <input type="email" id="email" class="form-control" placeholder="Email" required>
                     <div class="input-group-append">
                         <div class="input-group-text">
                             <span class="fas fa-envelope"></span>
@@ -38,7 +38,7 @@
                     </div>
                 </div>
                 <div class="input-group mb-3">
-                    <input type="password" class="form-control" placeholder="Password" required>
+                    <input type="password" id="password" class="form-control" placeholder="Password" required>
                     <div class="input-group-append">
                         <div class="input-group-text">
                             <span class="fas fa-lock"></span>
@@ -46,13 +46,25 @@
                     </div>
                 </div>
                 <div class="input-group mb-3">
-                    <input type="password" class="form-control" placeholder="Retype password" required>
+                    <input type="password" id="confirmPassword" class="form-control" placeholder="Retype password" required>
                     <div class="input-group-append">
                         <div class="input-group-text">
                             <span class="fas fa-lock"></span>
                         </div>
                     </div>
                 </div>
+
+                <!-- Role Selection Dropdown -->
+                <div class="input-group mb-3">
+                    <label for="role" class="mr-2">Select Role:</label>
+                    <select id="role" name="role" class="form-control" required>
+                        <option value="" disabled selected>Select your role</option>
+                        <option value="admin">Admin</option>
+                        <option value="editor">Editor</option>
+                        <option value="viewer">Viewer</option>
+                    </select>
+                </div>
+
                 <div class="row">
                     <div class="col-8">
                         <div class="icheck-primary">
@@ -66,6 +78,9 @@
                         <button type="submit" class="btn btn-primary btn-block">Register</button>
                     </div>
                 </div>
+
+                <!-- Error message display -->
+                <p id="errorMessage" class="text-danger mt-2"></p>
             </form>
 
             <a href="login.html" class="text-center">I already have a membership</a>
@@ -79,17 +94,7 @@
 <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- AdminLTE App -->
 <script src="dist/js/adminlte.min.js"></script>
-
-<script>
-    function register(event) {
-        event.preventDefault(); // Prevent default form submission
-
-        // Simulate registration success
-        alert("Registration successful!");
-
-        // Redirect to dashboard
-        window.location.href = "index.html";
-    }
-</script>
+<!-- Custom Signup Script -->
+<script src="signup.js"></script>
 </body>
 </html>
