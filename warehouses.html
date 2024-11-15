@@ -3,22 +3,178 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Warehouses</title>
+    <title>Warehouses - Inventory Management System</title>
+
+    <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
+    <!-- Leaflet CSS for Map -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <!-- AdminLTE Theme style -->
     <link rel="stylesheet" href="dist/css/adminlte.min.css">
+    <!-- Custom Warehouse CSS -->
+    <link rel="stylesheet" href="dist/css/custom-warehouse.css">
 </head>
-<body class="hold-transition sidebar-mini">
+<body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
-    <section class="content-header">
-        <h1>Warehouses</h1>
-    </section>
-    <section class="content">
-        <div class="container-fluid">
-            <!-- Add warehouses content here -->
-            <p>Manage Warehouses here.</p>
+
+    <!-- Navbar -->
+    <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+            </li>
+            <li class="nav-item d-none d-sm-inline-block">
+                <a href="dashboard.html" class="nav-link">Home</a>
+            </li>
+            <li class="nav-item d-none d-sm-inline-block">
+                <a href="alerts.html" class="nav-link">Alerts</a>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- Main Sidebar Container -->
+    <aside class="main-sidebar sidebar-dark-primary elevation-4">
+        <!-- Brand Logo -->
+        <a href="#" class="brand-link">
+            <img src="dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3">
+            <span class="brand-text font-weight-light">Inventory System</span>
+        </a>
+
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <nav class="mt-2">
+                <ul class="nav nav-pills nav-sidebar flex-column" role="menu" data-accordion="false">
+                    <li class="nav-item">
+                        <a href="dashboard.html" class="nav-link">
+                            <i class="nav-icon fas fa-tachometer-alt"></i>
+                            <p>Dashboard</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="orders.html" class="nav-link">
+                            <i class="nav-icon fas fa-shopping-cart"></i>
+                            <p>Sales Orders</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="products.html" class="nav-link">
+                            <i class="nav-icon fas fa-box"></i>
+                            <p>Products</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="warehouses.html" class="nav-link active">
+                            <i class="nav-icon fas fa-warehouse"></i>
+                            <p>Warehouses</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="employees.html" class="nav-link">
+                            <i class="nav-icon fas fa-users"></i>
+                            <p>Employees</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="alerts.html" class="nav-link">
+                            <i class="nav-icon fas fa-exclamation-triangle"></i>
+                            <p>Alerts</p>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
         </div>
-    </section>
+    </aside>
+
+    <!-- Content Wrapper -->
+    <div class="content-wrapper">
+        <!-- Content Header -->
+        <section class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1>Warehouses</h1>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Main content -->
+        <section class="content">
+            <div class="container-fluid">
+                <!-- Warehouse Overview Section -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Warehouse Overview</h3>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Location</th>
+                                    <th>Capacity</th>
+                                    <th>Stock Level</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="warehouse-list">
+                                <!-- Dynamic Warehouse List -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Map Section -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Warehouse Locations Map</h3>
+                    </div>
+                    <div class="card-body">
+                        <div id="warehouse-map" style="height: 400px;"></div>
+                    </div>
+                </div>
+
+                <!-- Add Warehouse Form Section -->
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Add New Warehouse</h3>
+                    </div>
+                    <div class="card-body">
+                        <form id="add-warehouse-form">
+                            <div class="form-group">
+                                <label for="warehouse-name">Warehouse Name</label>
+                                <input type="text" class="form-control" id="warehouse-name" placeholder="Enter warehouse name">
+                            </div>
+                            <div class="form-group">
+                                <label for="warehouse-location">Location (Latitude, Longitude)</label>
+                                <input type="text" class="form-control" id="warehouse-location" placeholder="e.g., 37.7749, -122.4194">
+                            </div>
+                            <div class="form-group">
+                                <label for="warehouse-capacity">Capacity</label>
+                                <input type="number" class="form-control" id="warehouse-capacity" placeholder="Enter capacity">
+                            </div>
+                            <button type="submit" class="btn btn-primary">Add Warehouse</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <strong>&copy; 2024 <a href="https://google.com">Inventory Management System for Perishable Goods</a>.</strong>
+        All rights reserved.
+    </footer>
+
 </div>
+
+<!-- Scripts -->
 <script src="plugins/jquery/jquery.min.js"></script>
-<script src="dist/js/adminlte.min.js"></script>
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+<script src="warehouses.js"></script>
 </body>
 </html>
