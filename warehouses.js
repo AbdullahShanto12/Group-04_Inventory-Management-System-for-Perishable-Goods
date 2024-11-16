@@ -1,5 +1,3 @@
-// warehouses.js
-
 $(document).ready(function() {
     // Sample warehouse data
     const warehouseData = [
@@ -54,32 +52,44 @@ $(document).ready(function() {
         });
     }
 
-    // Function to add a new warehouse
+    // Function to add or update a warehouse (depending on whether it's a new warehouse or an edit)
     $("#add-warehouse-form").submit(function(e) {
         e.preventDefault();
 
-        // Get values from the form
         const name = $("#warehouse-name").val();
         const locationInput = $("#warehouse-location").val().split(",");
         const capacity = $("#warehouse-capacity").val();
-        const id = "W" + (warehouseData.length + 1).toString().padStart(3, "0");
+        const stock = $("#warehouse-stock").val();
 
-        const newWarehouse = {
-            id: id,
-            name: name,
-            location: { lat: parseFloat(locationInput[0]), lon: parseFloat(locationInput[1]) },
-            capacity: parseInt(capacity),
-            stock: 0 // Initially set stock level to 0
-        };
+        // Check if we are editing an existing warehouse or adding a new one
+        if ($("#warehouse-id").val()) {
+            const id = $("#warehouse-id").val();
+            const warehouse = warehouseData.find(w => w.id === id);
 
-        warehouseData.push(newWarehouse);
+            if (warehouse) {
+                // Update the warehouse if it's an edit
+                warehouse.name = name;
+                warehouse.location = { lat: parseFloat(locationInput[0]), lon: parseFloat(locationInput[1]) };
+                warehouse.capacity = parseInt(capacity);
+                warehouse.stock = parseInt(stock);
+            }
+        } else {
+            // Add new warehouse if not in edit mode
+            const id = "W" + (warehouseData.length + 1).toString().padStart(3, "0");
+            const newWarehouse = {
+                id: id,
+                name: name,
+                location: { lat: parseFloat(locationInput[0]), lon: parseFloat(locationInput[1]) },
+                capacity: parseInt(capacity),
+                stock: parseInt(stock)
+            };
+            warehouseData.push(newWarehouse);
+        }
 
-        // Render updated warehouse list and refresh map
+        // Clear the form and update the list and map
+        $("#add-warehouse-form")[0].reset(); // Reset form
         renderWarehouseList();
         initMap();
-
-        // Clear form fields
-        $("#add-warehouse-form")[0].reset();
     });
 
     // Function to remove a warehouse
@@ -96,12 +106,12 @@ $(document).ready(function() {
     window.editWarehouse = function(id) {
         const warehouse = warehouseData.find(w => w.id === id);
         if (warehouse) {
+            // Fill the form with the current warehouse details
+            $("#warehouse-id").val(warehouse.id);
             $("#warehouse-name").val(warehouse.name);
             $("#warehouse-location").val(`${warehouse.location.lat}, ${warehouse.location.lon}`);
             $("#warehouse-capacity").val(warehouse.capacity);
-
-            // Remove warehouse from data before update (not ideal for real applications, but works for this demo)
-            removeWarehouse(id);
+            $("#warehouse-stock").val(warehouse.stock);
         }
     };
 

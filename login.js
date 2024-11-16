@@ -14,7 +14,7 @@ function handleLogin(event) {
     // Check if stored credentials match entered values
     if (storedUser && username === storedUser.username && password === storedUser.password && role === storedUser.role) {
         // Redirect to dashboard if credentials match
-        window.location.href = "index.html";
+        window.location.href = "dashboard.html";
     } else {
         // Show error message if credentials don't match
         errorMessage.textContent = "Invalid username, password, or role.";

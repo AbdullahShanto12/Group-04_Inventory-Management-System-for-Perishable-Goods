@@ -15,6 +15,9 @@
     <link rel="stylesheet" href="dist/css/adminlte.min.css">
     <!-- Custom Warehouse CSS -->
     <link rel="stylesheet" href="dist/css/custom-warehouse.css">
+    <style>
+        #warehouse-map { height: 400px; }
+    </style>
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
@@ -156,6 +159,10 @@
                                 <label for="warehouse-capacity">Capacity</label>
                                 <input type="number" class="form-control" id="warehouse-capacity" placeholder="Enter capacity">
                             </div>
+                            <div class="form-group">
+                                <label for="warehouse-stock">Stock Level</label>
+                                <input type="number" class="form-control" id="warehouse-stock" placeholder="Enter stock level">
+                            </div>
                             <button type="submit" class="btn btn-primary">Add Warehouse</button>
                         </form>
                     </div>
@@ -170,6 +177,35 @@
         All rights reserved.
     </footer>
 
+</div>
+
+<!-- Edit Warehouse Modal -->
+<div class="modal" id="edit-warehouse-modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Edit Warehouse</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="edit-warehouse-form">
+                    <div class="form-group">
+                        <label for="edit-warehouse-name">Warehouse Name</label>
+                        <input type="text" class="form-control" id="edit-warehouse-name">
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-warehouse-location">Location (Latitude, Longitude)</label>
+                        <input type="text" class="form-control" id="edit-warehouse-location">
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-warehouse-capacity">Capacity</label>
+                        <input type="number" class="form-control" id="edit-warehouse-capacity">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Update Warehouse</button>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
 
 <!-- Scripts -->
