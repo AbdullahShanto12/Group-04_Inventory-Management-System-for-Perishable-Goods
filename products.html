@@ -163,6 +163,43 @@
     </div>
     <!-- /.content-wrapper -->
 
+    <!-- Edit Product Modal -->
+    <div class="modal fade" id="editProductModal" tabindex="-1" role="dialog" aria-labelledby="editProductModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editProductModalLabel">Edit Product</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="edit-product-form">
+                        <input type="hidden" id="edit-product-id">
+                        <div class="form-group">
+                            <label for="edit-product-name">Product Name</label>
+                            <input type="text" class="form-control" id="edit-product-name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="edit-product-category">Category</label>
+                            <input type="text" class="form-control" id="edit-product-category" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="edit-stock-quantity">Stock Quantity</label>
+                            <input type="number" class="form-control" id="edit-stock-quantity" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="edit-product-price">Price ($)</label>
+                            <input type="number" step="0.01" class="form-control" id="edit-product-price" required>
+                        </div>
+                        <button type="button" id="save-edit-button" class="btn btn-primary">Save Changes</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /.modal -->
+
     <!-- Footer -->
     <footer class="main-footer">
         <strong>Copyright &copy; 2024 <a href="https://google.com">Inventory Management System for Perishable Goods</a>.</strong>

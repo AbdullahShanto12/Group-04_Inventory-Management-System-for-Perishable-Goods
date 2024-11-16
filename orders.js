@@ -101,13 +101,15 @@ function generateSalesOrderTable() {
 
 // Function to handle viewing an order
 function viewOrder(orderId) {
-    alert('Viewing details of order ' + orderId);
-    // You can redirect to a detailed view page or show more details in a modal
+    const order = salesOrders.find(o => o.orderId === orderId);
+    if (order) {
+        alert('Viewing details of order ' + orderId + ':\n' + JSON.stringify(order, null, 2));
+        // You can replace alert with modal popup to display more details.
+    }
 }
 
 // Function to handle editing an order
 function editOrder(orderId) {
-    // Find the order to edit
     const order = salesOrders.find(o => o.orderId === orderId);
 
     if (order) {
@@ -155,7 +157,38 @@ function deleteOrder(orderId) {
     }
 }
 
+// Function to handle adding a new order
+function addOrder() {
+    const orderId = document.getElementById('addOrderId').value;
+    const customerName = document.getElementById('addCustomerName').value;
+    const orderDate = document.getElementById('addOrderDate').value;
+    const status = document.getElementById('addStatus').value;
+    const totalAmount = document.getElementById('addTotalAmount').value;
+
+    // Validate input fields
+    if (!orderId || !customerName || !orderDate || !status || !totalAmount) {
+        alert('Please fill in all fields.');
+        return;
+    }
+
+    const newOrder = {
+        orderId: orderId,
+        customerName: customerName,
+        orderDate: orderDate,
+        status: status,
+        totalAmount: totalAmount
+    };
+
+    // Add the new order to the salesOrders array
+    salesOrders.push(newOrder);
+    generateSalesOrderTable(); // Re-render the table
+    $('#addOrderModal').modal('hide'); // Close the modal
+}
+
 // Initializing the sales orders table when the page loads
 document.addEventListener('DOMContentLoaded', () => {
     generateSalesOrderTable();
 });
+
+// Event listener for the Add Order button in the modal
+document.getElementById('saveAddButton').addEventListener('click', addOrder);
