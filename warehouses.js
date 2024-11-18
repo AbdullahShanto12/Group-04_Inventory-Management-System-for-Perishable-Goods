@@ -1,131 +1,147 @@
-$(document).ready(function() {
+document.addEventListener("DOMContentLoaded", () => {
     // Sample warehouse data
-    const warehouseData = [
-        { id: "W001", name: "Warehouse 1", location: { lat: 37.7749, lon: -122.4194 }, capacity: 500, stock: 200 },
-        { id: "W002", name: "Warehouse 2", location: { lat: 34.0522, lon: -118.2437 }, capacity: 800, stock: 350 },
-        { id: "W003", name: "Warehouse 3", location: { lat: 40.7128, lon: -74.0060 }, capacity: 1000, stock: 450 }
+    let warehouses = [
+        { id: 1, name: "Warehouse A", location: "37.7749, -122.4194", capacity: 1000, stock: 500 },
+        { id: 2, name: "Warehouse B", location: "34.0522, -118.2437", capacity: 1500, stock: 750 },
     ];
 
-    // Initialize Leaflet map
-    const map = L.map('warehouse-map').setView([37.7749, -122.4194], 4); // Default view: centered on San Francisco
+    const warehouseList = document.getElementById("warehouse-list");
+    const addWarehouseForm = document.getElementById("add-warehouse-form");
+    const editWarehouseForm = document.getElementById("editWarehouseForm");
+    const deleteWarehouseBtn = document.getElementById("deleteWarehouseBtn");
 
-    // Add a tile layer to the map
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    let editWarehouseId = null; // For tracking the warehouse being edited
+    let markers = {}; // Store markers for each warehouse
+
+    // Initialize map
+    const map = L.map("warehouse-map").setView([37.7749, -122.4194], 5);
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
         maxZoom: 19,
     }).addTo(map);
 
-    // Function to render warehouse list in the table
-    function renderWarehouseList() {
-        const warehouseList = $("#warehouse-list");
-        warehouseList.empty(); // Clear current list
+    // Function to render the warehouses table
+    function renderWarehouses() {
+        warehouseList.innerHTML = "";
+        Object.values(markers).forEach((marker) => map.removeLayer(marker));
+        markers = {}; // Clear existing markers
 
-        warehouseData.forEach(function(warehouse) {
-            const row = `<tr>
+        warehouses.forEach((warehouse) => {
+            const [lat, lng] = warehouse.location.split(",").map(Number);
+            const row = document.createElement("tr");
+            row.innerHTML = `
                 <td>${warehouse.id}</td>
                 <td>${warehouse.name}</td>
-                <td>${warehouse.location.lat}, ${warehouse.location.lon}</td>
+                <td>${warehouse.location}</td>
                 <td>${warehouse.capacity}</td>
                 <td>${warehouse.stock}</td>
                 <td>
-                    <button class="btn btn-sm btn-danger" onclick="removeWarehouse('${warehouse.id}')">Remove</button>
-                    <button class="btn btn-sm btn-primary" onclick="editWarehouse('${warehouse.id}')">Edit</button>
-                    <button class="btn btn-info btn-sm" onclick="showOnMap('${warehouse.id}')">View on Map</button>
+                    <button class="btn btn-sm btn-primary edit-btn" data-id="${warehouse.id}">Edit</button>
+                    <button class="btn btn-sm btn-danger delete-btn" data-id="${warehouse.id}">Delete</button>
+                    <button class="btn btn-sm btn-success view-btn" data-id="${warehouse.id}">View on Map</button>
                 </td>
-            </tr>`;
-            warehouseList.append(row);
-        });
-    }
+            `;
+            warehouseList.appendChild(row);
 
-    // Function to initialize the map and add warehouse markers
-    function initMap() {
-        // Clear existing markers before re-adding
-        map.eachLayer(function(layer) {
-            if (layer instanceof L.Marker) {
-                map.removeLayer(layer);
-            }
-        });
-
-        warehouseData.forEach(warehouse => {
-            L.marker([warehouse.location.lat, warehouse.location.lon])
+            // Add marker to the map
+            const marker = L.marker([lat, lng])
                 .addTo(map)
-                .bindPopup(`<b>${warehouse.name}</b><br>Capacity: ${warehouse.capacity}<br>Stock Level: ${warehouse.stock}`);
+                .bindPopup(`<b>${warehouse.name}</b><br>Stock: ${warehouse.stock}`);
+            markers[warehouse.id] = marker;
+        });
+
+        attachTableActions();
+    }
+
+    // Function to attach actions to Edit/Delete/View buttons
+    function attachTableActions() {
+        document.querySelectorAll(".edit-btn").forEach((button) => {
+            button.addEventListener("click", (e) => {
+                const id = Number(e.target.getAttribute("data-id"));
+                const warehouse = warehouses.find((wh) => wh.id === id);
+
+                if (warehouse) {
+                    editWarehouseId = id;
+                    document.getElementById("editWarehouseName").value = warehouse.name;
+                    document.getElementById("editWarehouseLocation").value = warehouse.location;
+                    document.getElementById("editWarehouseCapacity").value = warehouse.capacity;
+                    document.getElementById("editWarehouseStock").value = warehouse.stock;
+
+                    $("#editWarehouseModal").modal("show");
+                }
+            });
+        });
+
+        document.querySelectorAll(".delete-btn").forEach((button) => {
+            button.addEventListener("click", (e) => {
+                const id = Number(e.target.getAttribute("data-id"));
+                editWarehouseId = id;
+
+                $("#confirmDeleteModal").modal("show");
+            });
+        });
+
+        document.querySelectorAll(".view-btn").forEach((button) => {
+            button.addEventListener("click", (e) => {
+                const id = Number(e.target.getAttribute("data-id"));
+                const warehouse = warehouses.find((wh) => wh.id === id);
+
+                if (warehouse) {
+                    const [lat, lng] = warehouse.location.split(",").map(Number);
+                    map.setView([lat, lng], 12); // Zoom in to the location
+                    markers[warehouse.id].openPopup(); // Open the marker popup
+                }
+            });
         });
     }
 
-    // Function to add or update a warehouse (depending on whether it's a new warehouse or an edit)
-    $("#add-warehouse-form").submit(function(e) {
+    // Handle Add Warehouse form submission
+    addWarehouseForm.addEventListener("submit", (e) => {
         e.preventDefault();
 
-        const name = $("#warehouse-name").val();
-        const locationInput = $("#warehouse-location").val().split(",");
-        const capacity = $("#warehouse-capacity").val();
-        const stock = $("#warehouse-stock").val();
+        const name = document.getElementById("warehouse-name").value.trim();
+        const location = document.getElementById("warehouse-location").value.trim();
+        const capacity = Number(document.getElementById("warehouse-capacity").value);
+        const stock = Number(document.getElementById("warehouse-stock").value);
 
-        // Check if we are editing an existing warehouse or adding a new one
-        if ($("#warehouse-id").val()) {
-            const id = $("#warehouse-id").val();
-            const warehouse = warehouseData.find(w => w.id === id);
+        if (name && location && capacity >= 0 && stock >= 0) {
+            const id = warehouses.length ? warehouses[warehouses.length - 1].id + 1 : 1;
+            warehouses.push({ id, name, location, capacity, stock });
 
-            if (warehouse) {
-                // Update the warehouse if it's an edit
-                warehouse.name = name;
-                warehouse.location = { lat: parseFloat(locationInput[0]), lon: parseFloat(locationInput[1]) };
-                warehouse.capacity = parseInt(capacity);
-                warehouse.stock = parseInt(stock);
-            }
+            renderWarehouses();
+            addWarehouseForm.reset();
         } else {
-            // Add new warehouse if not in edit mode
-            const id = "W" + (warehouseData.length + 1).toString().padStart(3, "0");
-            const newWarehouse = {
-                id: id,
-                name: name,
-                location: { lat: parseFloat(locationInput[0]), lon: parseFloat(locationInput[1]) },
-                capacity: parseInt(capacity),
-                stock: parseInt(stock)
-            };
-            warehouseData.push(newWarehouse);
+            alert("Please fill in all fields with valid data.");
         }
-
-        // Clear the form and update the list and map
-        $("#add-warehouse-form")[0].reset(); // Reset form
-        renderWarehouseList();
-        initMap();
     });
 
-    // Function to remove a warehouse
-    window.removeWarehouse = function(id) {
-        const index = warehouseData.findIndex(warehouse => warehouse.id === id);
-        if (index > -1) {
-            warehouseData.splice(index, 1);
-            renderWarehouseList();
-            initMap();
-        }
-    };
+    // Handle Edit Warehouse form submission
+    editWarehouseForm.addEventListener("submit", (e) => {
+        e.preventDefault();
 
-    // Function to edit warehouse details
-    window.editWarehouse = function(id) {
-        const warehouse = warehouseData.find(w => w.id === id);
-        if (warehouse) {
-            // Fill the form with the current warehouse details
-            $("#warehouse-id").val(warehouse.id);
-            $("#warehouse-name").val(warehouse.name);
-            $("#warehouse-location").val(`${warehouse.location.lat}, ${warehouse.location.lon}`);
-            $("#warehouse-capacity").val(warehouse.capacity);
-            $("#warehouse-stock").val(warehouse.stock);
-        }
-    };
+        const name = document.getElementById("editWarehouseName").value.trim();
+        const location = document.getElementById("editWarehouseLocation").value.trim();
+        const capacity = Number(document.getElementById("editWarehouseCapacity").value);
+        const stock = Number(document.getElementById("editWarehouseStock").value);
 
-    // Function to show warehouse location on map
-    window.showOnMap = function(id) {
-        const warehouse = warehouseData.find(w => w.id === id);
-        if (warehouse) {
-            map.setView([warehouse.location.lat, warehouse.location.lon], 10); // Zoom to warehouse location
-            L.marker([warehouse.location.lat, warehouse.location.lon]).addTo(map)
-                .bindPopup(`<b>${warehouse.name}</b><br>Capacity: ${warehouse.capacity}<br>Stock Level: ${warehouse.stock}`);
+        if (name && location && capacity >= 0 && stock >= 0) {
+            const index = warehouses.findIndex((wh) => wh.id === editWarehouseId);
+            if (index > -1) {
+                warehouses[index] = { ...warehouses[index], name, location, capacity, stock };
+                renderWarehouses();
+                $("#editWarehouseModal").modal("hide");
+            }
+        } else {
+            alert("Please fill in all fields with valid data.");
         }
-    };
+    });
 
-    // Initially render warehouse list and set up map
-    renderWarehouseList();
-    initMap();
+    // Handle Delete Warehouse confirmation
+    deleteWarehouseBtn.addEventListener("click", () => {
+        warehouses = warehouses.filter((wh) => wh.id !== editWarehouseId);
+        renderWarehouses();
+        $("#confirmDeleteModal").modal("hide");
+    });
+
+    // Initial render
+    renderWarehouses();
 });
