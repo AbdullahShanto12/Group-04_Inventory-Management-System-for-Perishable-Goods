@@ -24,6 +24,57 @@
         .dark-mode .card {
             background-color: #1e1e1e;
         }
+        .main-sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            overflow-y: auto;
+            background-color: #343a40;
+            width: 250px;
+            z-index: 1030;
+        }
+        .wrapper {
+            margin-left: 250px;
+        }
+        .content-wrapper {
+            margin-left: 250px;
+            padding: 20px;
+        }
+        .brand-link {
+            height: 50px;
+            padding: 5px 10px;
+            display: flex;
+            align-items: center;
+        }
+        .brand-link img {
+            height: 60px;
+            width: auto;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            padding: 5px 5px;
+        }
+        .brand-text {
+            font-size: 14px;
+            margin-left: 10px;
+            margin-top: 20px;
+        }
+        .nav-sidebar {
+            display: flex;
+            flex-direction: column;
+            padding: 0;
+        }
+        .nav-sidebar .nav-item {
+            width: 100%;
+        }
+        .nav-sidebar .nav-link {
+            padding: 10px 15px;
+            color: #ffffff;
+            text-decoration: none;
+        }
+        .nav-sidebar .nav-link.active {
+            background-color: #495057;
+        }
         .search-container {
             background: linear-gradient(to right, #6a11cb, #2575fc);
             color: #fff;
@@ -37,13 +88,19 @@
             right: 20px;
             cursor: pointer;
         }
+       
+ 
+        .minimum-height {
+            min-height: calc(90vh - 104px);
+        }
+
         .loading {
             display: none;
             text-align: center;
         }
     </style>
 </head>
-<body class="hold-transition sidebar-mini layout-fixed">
+<body>
     <div class="wrapper">
 
         <!-- Dark Mode Toggle -->
@@ -51,20 +108,19 @@
             <i class="fas fa-moon fa-2x"></i>
         </div>
 
-        <!-- Navbar -->
-        <nav class="main-header navbar navbar-expand navbar-white navbar-light">
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
-                </li>
-                <li class="nav-item d-none d-sm-inline-block">
-                    <a href="#" class="nav-link">Home</a>
-                </li>
-                <li class="nav-item d-none d-sm-inline-block">
-                    <a href="#" class="nav-link">Contact</a>
-                </li>
-            </ul>
-        </nav>
+
+            <!-- Navbar -->
+    <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+            </li>
+            <li class="nav-item d-none d-sm-inline-block">
+                <a href="dashboard.html" class="nav-link">Home</a>
+            </li>
+
+        </ul>
+    </nav>
 
         <!-- Sidebar -->
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
@@ -74,7 +130,7 @@
             </a>
             <div class="sidebar">
                 <nav class="mt-2">
-                    <ul class="nav nav-pills nav-sidebar flex-column" role="menu" data-accordion="false">
+                    <ul class="nav nav-pills nav-sidebar flex-column" data-accordion="false">
                         <li class="nav-item">
                             <a href="dashboard.html" class="nav-link">
                                 <i class="nav-icon fas fa-tachometer-alt"></i>
@@ -117,67 +173,60 @@
         </aside>
 
         <!-- Main Content -->
-        <div class="content-wrapper">
-            <div class="row">
-                <div class="col-lg-10 col-md-12">
-                    <div class="container mt-3">
+        <div class="content-wrapper minimum-height">
+            <div class="container mt-3">
+                <div class="text-left mb-4">
+                    <h1>Employee Directory</h1>
+                    <p>Search and explore employee details</p>
+                </div>
 
-                        <!-- Header -->
-                        <div class="text-left mb-4">
-                            <h1>Employee Directory</h1>
-                            <p>Search and explore employee details</p>
+                <!-- Search Container -->
+                <div class="card search-container p-3 mb-3">
+                    <h3>Search Employee</h3>
+                    <input type="text" id="employee-id" class="form-control mb-2" placeholder="Enter Employee ID">
+                    <button onclick="searchEmployee()" class="btn btn-light">Search</button>
+                </div>
+
+                <!-- Filters -->
+                <h3 class="mb-3">Browse by Filter</h3>
+                <div class="category-container d-flex justify-content-start mb-4">
+                    <button class="btn btn-outline-primary me-2" onclick="filterByCategory('Sales')">Sales</button>
+                    <button class="btn btn-outline-success me-2" onclick="filterByCategory('IT')">IT</button>
+                    <button class="btn btn-outline-danger me-2" onclick="filterByCategory('Marketing')">Marketing</button>
+                    <button class="btn btn-outline-warning me-2" onclick="filterByCategory('Admin')">Admin</button>
+                    <button class="btn btn-outline-dark me-2" onclick="filterByCategory('HR')">HR</button>
+                    <button class="btn btn-outline-secondary" id="show-all-employees-btn">All Employees</button>
+                </div>
+
+                <!-- Employee List -->
+                <div id="employee-list" class="mt-4">
+                    <div id="loading-spinner" class="loading">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Loading...</span>
                         </div>
-
-                        <!-- Search Container -->
-                        <div class="card search-container p-3 mb-3">
-                            <h3>Search Employee</h3>
-                            <input type="text" id="employee-id" class="form-control mb-2" placeholder="Enter Employee ID">
-                            <button onclick="searchEmployee()" class="btn btn-light">Search</button>
-                        </div>
-
-                        <!-- Filters -->
-                        <h3 class="mb-3">Browse by Filter</h3>
-                        <div class="category-container d-flex justify-content-start mb-4">
-                            <button class="btn btn-outline-primary me-2" onclick="filterByCategory('Sales')">Sales</button>
-                            <button class="btn btn-outline-success me-2" onclick="filterByCategory('IT')">IT</button>
-                            <button class="btn btn-outline-danger me-2" onclick="filterByCategory('Marketing')">Marketing</button>
-                            <button class="btn btn-outline-warning me-2" onclick="filterByCategory('Admin')">Admin</button>
-                            <button class="btn btn-outline-dark" onclick="filterByCategory('HR')">HR</button>
-                        </div>
-
-                        <!-- Loading Spinner -->
-                        <div id="loading-spinner" class="loading">
-                            <div class="spinner-border text-primary" role="status">
-                                <span class="visually-hidden">Loading...</span>
-                            </div>
-                        </div>
-
-                        <!-- Employee Details -->
-                        <div id="employee-details" class="card mt-3" style="display: none;">
-                            <div class="card-header">
-                                <h3 class="card-title">Employee Details</h3>
-                            </div>
-                            <div class="card-body">
-                                <table class="table table-striped">
-                                    <tr><th>Name</th><td id="employee-name">[Name]</td></tr>
-                                    <tr><th>Department</th><td id="employee-department">[Department]</td></tr>
-                                    <tr><th>Phone Number</th><td id="employee-phone">[Phone]</td></tr>
-                                    <tr><th>Job Title</th><td id="employee-job-title">[Job Title]</td></tr>
-                                    <tr><th>Location</th><td id="employee-location">[Location]</td></tr>
-                                    <tr><th>Years of Service</th><td id="employee-years">[Years]</td></tr>
-                                </table>
-                            </div>
-                        </div>
-
                     </div>
+                    <div id="filtered-employees" class="row"></div>
                 </div>
             </div>
         </div>
     </div>
 
-<!-- Scripts -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script src="employees.js"></script>
+<!-- Footer -->
+<footer class="main-footer bg-dark text-white mt-5 p-3 text-center">
+    <div class="container">
+    
+        <strong>&copy; 2024 <a href="#" class="text-white text-decoration-none">Inventory Management System</a>.</strong>
+        <p class="mb-0">All rights reserved.</p>
+        <p class="mb-0">
+            Designed and Developed by <a href="#" class="text-primary text-decoration-none">Esha</a>
+        </p>
+    </div>
+</footer>
+
+
+    <!-- External Scripts -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="employees.js"></script>
 </body>
 </html>
