@@ -22,10 +22,25 @@ const employeeData = [
     { id: "E020", name: "Tina Evans", department: "HR", phone: "555-3214", jobTitle: "Compensation Analyst", location: "Seattle", yearsOfService: 7 }
 ];
 
-// Dark mode toggle
-document.getElementById('dark-mode-toggle').addEventListener('click', () => {
-    document.body.classList.toggle('dark-mode');
+document.addEventListener('DOMContentLoaded', function () {
+    // Sidebar toggle (AdminLTE functionality is handled by its script)
+    const pushMenuLink = document.querySelector('[data-widget="pushmenu"]');
+    if (pushMenuLink) {
+        pushMenuLink.addEventListener('click', function () {
+            // AdminLTE should handle the sidebar toggle, no additional code required here
+        });
+    }
+
+    // Dark Mode Toggle
+    const darkModeToggle = document.getElementById("dark-mode-toggle");
+    darkModeToggle.addEventListener("click", () => {
+        document.body.classList.toggle("dark-mode");
+        darkModeToggle.querySelector("i").classList.toggle("fa-sun");
+        darkModeToggle.querySelector("i").classList.toggle("fa-moon");
+    });
+
 });
+
 
 // Toggle employees display on "All Employees" button click
 let showAll = false;
