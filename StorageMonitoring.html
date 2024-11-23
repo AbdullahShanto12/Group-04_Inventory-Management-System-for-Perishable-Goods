@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Products - Inventory Management System</title>
+    <title>Storage Monitoring - Inventory Management System</title>
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -30,7 +30,6 @@
             <li class="nav-item d-none d-sm-inline-block">
                 <a href="dashboard.html" class="nav-link">Home</a>
             </li>
- 
         </ul>
     </nav>
     <!-- /.navbar -->
@@ -66,13 +65,13 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="products.html" class="nav-link active">
+                        <a href="products.html" class="nav-link">
                             <i class="nav-icon fas fa-box"></i>
                             <p>Products</p>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="warehouses.html" class="nav-link">
+                        <a href="warehouses.html" class="nav-link ">
                             <i class="nav-icon fas fa-warehouse"></i>
                             <p>Warehouses</p>
                         </a>
@@ -90,7 +89,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="StorageMonitoring.html" class="nav-link ">
+                        <a href="StorageMonitoring.html" class="nav-link active">
                             <i class="nav-icon fas fa-thermometer-half"></i>
                             <p>Storage Monitoring</p>
                         </a>
@@ -114,7 +113,7 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1>Products</h1>
+                        <h1>Storage Monitoring</h1>
                     </div>
                 </div>
             </div>
@@ -123,105 +122,66 @@
         <!-- Main content -->
         <section class="content">
             <div class="container-fluid">
-                <!-- Product Table Section (Top) -->
+                <!-- Real-Time Monitoring Section -->
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">Product Inventory</h3>
+                        <h3 class="card-title">Real-Time Storage Conditions</h3>
                     </div>
-                    <div class="card-body p-0">
-                        <table class="table table-striped projects">
-                            <thead>
-                                <tr>
-                                    <th style="width: 10%">Product ID</th>
-                                    <th style="width: 25%">Product Name</th>
-                                    <th style="width: 20%">Category</th>
-                                    <th style="width: 15%">Stock Quantity</th>
-                                    <th style="width: 15%">Price</th>
-                                    <th style="width: 15%">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody id="product-list">
-                                <!-- Dynamic Product List will be here -->
-                            </tbody>
-                        </table>
+                    <div class="card-body">
+                        <div class="row">
+                            <!-- Temperature Monitoring -->
+                            <div class="col-lg-6 col-md-6">
+                                <div class="info-box">
+                                    <span class="info-box-icon bg-warning"><i class="fas fa-thermometer-half"></i></span>
+                                    <div class="info-box-content">
+                                        <span class="info-box-text">Temperature</span>
+                                        <span class="info-box-number" id="temperature-value">-- °C</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Humidity Monitoring -->
+                            <div class="col-lg-6 col-md-6">
+                                <div class="info-box">
+                                    <span class="info-box-icon bg-info"><i class="fas fa-tint"></i></span>
+                                    <div class="info-box-content">
+                                        <span class="info-box-text">Humidity</span>
+                                        <span class="info-box-number" id="humidity-value">-- %</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-muted">Last updated: <span id="last-updated">--</span></div>
                     </div>
                 </div>
 
-                <!-- Add Product Form Section (Bottom) -->
-                <div class="card">
-                    <div class="card-header">
-                        <h3 class="card-title">Add New Product</h3>
-                    </div>
-                    <div class="card-body">
-                        <form id="add-product-form">
-                            <div class="form-group">
-                                <label for="product-name">Product Name</label>
-                                <input type="text" class="form-control" id="product-name" placeholder="Enter product name">
-                            </div>
-                            <div class="form-group">
-                                <label for="product-category">Category</label>
-                                <input type="text" class="form-control" id="product-category" placeholder="Enter product category">
-                            </div>
-                            <div class="form-group">
-                                <label for="stock-quantity">Stock Quantity</label>
-                                <input type="number" class="form-control" id="stock-quantity" placeholder="Enter stock quantity">
-                            </div>
-                            <div class="form-group">
-                                <label for="product-price">Price ($)</label>
-                                <input type="number" class="form-control" id="product-price" placeholder="Enter price">
-                            </div>
-                            <button type="submit" class="btn btn-primary">Add Product</button>
-                        </form>
-                    </div>
-                </div>
+                                <!-- Alerts Section -->
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="card">
+                                            <div class="card-header">
+                                                <h3 class="card-title"><i class="fas fa-exclamation-triangle"></i> Alerts</h3>
+                                            </div>
+                                            <div class="card-body">
+                                                <ul id="alerts-list" class="list-unstyled">
+                                                    <!-- Dynamic Alerts will be inserted here -->
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
             </div>
         </section>
     </div>
     <!-- /.content-wrapper -->
-
-    <!-- Edit Product Modal -->
-    <div class="modal fade" id="editProductModal" tabindex="-1" role="dialog" aria-labelledby="editProductModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="editProductModalLabel">Edit Product</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form id="edit-product-form">
-                        <input type="hidden" id="edit-product-id">
-                        <div class="form-group">
-                            <label for="edit-product-name">Product Name</label>
-                            <input type="text" class="form-control" id="edit-product-name" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="edit-product-category">Category</label>
-                            <input type="text" class="form-control" id="edit-product-category" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="edit-stock-quantity">Stock Quantity</label>
-                            <input type="number" class="form-control" id="edit-stock-quantity" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="edit-product-price">Price ($)</label>
-                            <input type="number" step="0.01" class="form-control" id="edit-product-price" required>
-                        </div>
-                        <button type="button" id="save-edit-button" class="btn btn-primary">Save Changes</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- /.modal -->
 
     <!-- Footer -->
     <footer class="main-footer">
         <strong>Copyright &copy; 2024 <a href="https://google.com">Inventory Management System for Perishable Goods</a>.</strong>
         All rights reserved.
     </footer>
-
 </div>
 <!-- ./wrapper -->
 
@@ -231,7 +191,39 @@
 <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- AdminLTE App -->
 <script src="dist/js/adminlte.min.js"></script>
-<!-- External JavaScript -->
-<script src="products.js"></script>
+
+
+<!-- Real-Time Monitoring Script -->
+<script>
+    // Simulating real-time updates
+    setInterval(() => {
+        const temp = (20 + Math.random() * 10).toFixed(2); // Simulated temperature
+        const humidity = (40 + Math.random() * 20).toFixed(2); // Simulated humidity
+        const now = new Date().toLocaleString();
+
+        // Update the display
+        document.getElementById('temperature-value').innerText = `${temp} °C`;
+        document.getElementById('humidity-value').innerText = `${humidity} %`;
+        document.getElementById('last-updated').innerText = now;
+
+        // Manage alerts
+        const alertsList = document.getElementById('alerts-list');
+        alertsList.innerHTML = ''; // Clear old alerts
+
+        // Threshold checks
+        if (temp > 28) {
+            const tempAlert = `<li><strong>Warning:</strong> Temperature is above safe levels! (${temp} °C)</li>`;
+            alertsList.innerHTML += tempAlert;
+        }
+        if (humidity < 45) {
+            const humidityAlert = `<li><strong>Warning:</strong> Humidity is below safe levels! (${humidity} %)</li>`;
+            alertsList.innerHTML += humidityAlert;
+        }
+    }, 5000);
+</script>
+
+
+
+
 </body>
 </html>
