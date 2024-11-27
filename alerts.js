@@ -31,23 +31,42 @@ function displayAlerts() {
     });
 }
 
-// Function to add a new alert
-document.getElementById('add-alert-form').addEventListener('submit', function(event) {
-    event.preventDefault();
-
+// Function to handle adding a new alert
+function addAlert() {
     const alertType = document.getElementById('alert-type').value;
     const alertDescription = document.getElementById('alert-description').value;
+
+    // Validate input fields
+    if (!alertType || !alertDescription) {
+        alert('Please fill in all fields.');
+        return;
+    }
+
     const newAlert = {
-        id: `A${alertData.length + 1}`.padStart(4, '0'),
+        id: `A${(alertData.length + 1).toString().padStart(3, '0')}`, // Generate unique ID
         type: alertType,
         description: alertDescription,
-        date: new Date().toISOString().split('T')[0],
-        status: "Active"
+        date: new Date().toISOString().split('T')[0], // Current date in YYYY-MM-DD format
+        status: "Active" // Default status
     };
 
+    // Add the new alert to the alertData array
     alertData.push(newAlert);
+
+    // Re-render the alerts table
     displayAlerts();
-});
+
+    // Clear the form fields
+    document.getElementById('alert-type').value = '';
+    document.getElementById('alert-description').value = '';
+
+    // Close the modal
+    $('#addAlertModal').modal('hide');
+}
+
+// Attach event listener to "Add Alert" button
+document.getElementById('saveAddAlert').addEventListener('click', addAlert);
+
 
 // Function to prepare an alert for deletion (opens the modal)
 function prepareDeleteAlert(alertId) {

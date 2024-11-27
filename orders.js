@@ -99,14 +99,18 @@ function generateSalesOrderTable() {
     });
 }
 
-// Function to handle viewing an order
+
+// Function to view order details
 function viewOrder(orderId) {
     const order = salesOrders.find(o => o.orderId === orderId);
     if (order) {
-        alert('Viewing details of order ' + orderId + ':\n' + JSON.stringify(order, null, 2));
-        // You can replace alert with modal popup to display more details.
+        alert(`Order Details:\n\nOrder ID: ${order.orderId}\nCustomer Name: ${order.customerName}\nOrder Date: ${order.orderDate}\nStatus: ${order.status}\nTotal Amount: ${order.totalAmount}`);
+    } else {
+        alert(`Order with ID ${orderId} not found.`);
     }
 }
+
+
 
 // Function to handle editing an order
 function editOrder(orderId) {

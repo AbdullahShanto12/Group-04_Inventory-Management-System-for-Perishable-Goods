@@ -1,4 +1,4 @@
-// Example products
+// Example products for initial data
 let products = [
     { id: '#101', name: 'Milk - Full Cream', category: 'Dairy', stock: 250, price: 3.50 },
     { id: '#102', name: 'Cheddar Cheese', category: 'Dairy', stock: 120, price: 5.25 },
@@ -6,113 +6,109 @@ let products = [
     { id: '#104', name: 'Fresh Butter', category: 'Dairy', stock: 80, price: 4.75 }
 ];
 
-// Function to render products in the table
+// Function to render products dynamically
 function renderProducts() {
-    const productList = document.querySelector('#product-list');
-    productList.innerHTML = ''; // Clear current list
+    const productTableBody = document.querySelector('#productTable tbody');
+    productTableBody.innerHTML = '';
 
-    products.forEach(product => {
-        const productRow = document.createElement('tr');
-        productRow.id = `product-${product.id}`;
-
-        productRow.innerHTML = `
-            <td>${product.id}</td>
-            <td>${product.name}</td>
-            <td>${product.category}</td>
-            <td>${product.stock}</td>
-            <td>$${product.price.toFixed(2)}</td>
-            <td>
-                <button class="btn btn-primary btn-sm" onclick="viewProduct('${product.id}')">
-                    <i class="fas fa-folder"></i> View
-                </button>
-                <button class="btn btn-info btn-sm" onclick="editProduct('${product.id}')">
-                    <i class="fas fa-pencil-alt"></i> Edit
-                </button>
-                <button class="btn btn-danger btn-sm" onclick="deleteProduct('${product.id}')">
-                    <i class="fas fa-trash"></i> Delete
-                </button>
-            </td>
+    products.forEach((product, index) => {
+        const row = `
+            <tr>
+                <td>${product.id}</td>
+                <td>${product.name}</td>
+                <td>${product.category}</td>
+                <td>${product.stock}</td>
+                <td>$${product.price.toFixed(2)}</td>
+                <td>
+                    <button class="btn btn-primary btn-sm" onclick="viewProduct(${index})">
+                        <i class="fas fa-folder"></i> View
+                    </button>
+                    <button class="btn btn-info btn-sm" onclick="showEditProductModal(${index})">
+                        <i class="fas fa-pencil-alt"></i> Edit
+                    </button>
+                    <button class="btn btn-danger btn-sm" onclick="deleteProduct(${index})">
+                        <i class="fas fa-trash"></i> Delete
+                    </button>
+                </td>
+            </tr>
         `;
-        productList.appendChild(productRow);
+        productTableBody.insertAdjacentHTML('beforeend', row);
     });
 }
 
-// Function to handle viewing a product
-function viewProduct(productId) {
-    const product = products.find(p => p.id === productId);
-    if (product) {
-        alert(`Product Details:\n\nID: ${product.id}\nName: ${product.name}\nCategory: ${product.category}\nStock: ${product.stock}\nPrice: $${product.price.toFixed(2)}`);
-    }
+
+
+
+// Function to view product details
+function viewProduct(index) {
+    const product = products[index];
+    alert(`Product Details:\n\nID: ${product.id}\nName: ${product.name}\nCategory: ${product.category}\nStock: ${product.stock}\nPrice: $${product.price.toFixed(2)}`);
 }
+
+
+
 
 // Function to handle adding a new product
-document.querySelector('#add-product-form').addEventListener('submit', function (e) {
-    e.preventDefault();
+function addProduct() {
+    const id = `#${products.length + 101}`;
+    const name = document.querySelector('#addProductName').value.trim();
+    const category = document.querySelector('#addCategory').value.trim();
+    const stock = parseInt(document.querySelector('#addStockQuantity').value, 10);
+    const price = parseFloat(document.querySelector('#addPrice').value);
 
-    const productName = document.querySelector('#product-name').value;
-    const productCategory = document.querySelector('#product-category').value;
-    const stockQuantity = Number(document.querySelector('#stock-quantity').value);
-    const productPrice = parseFloat(document.querySelector('#product-price').value);
-
-    const newProduct = {
-        id: `#${products.length + 101}`,
-        name: productName,
-        category: productCategory,
-        stock: stockQuantity,
-        price: productPrice
-    };
-
-    products.push(newProduct);
-    renderProducts();
-
-    // Reset form fields
-    document.querySelector('#add-product-form').reset();
-});
-
-// Function to handle editing a product
-function editProduct(productId) {
-    // Find the product to edit
-    const product = products.find(p => p.id === productId);
-
-    if (product) {
-        // Fill the form fields with the existing product data
-        document.querySelector('#edit-product-id').value = product.id;
-        document.querySelector('#edit-product-name').value = product.name;
-        document.querySelector('#edit-product-category').value = product.category;
-        document.querySelector('#edit-stock-quantity').value = product.stock;
-        document.querySelector('#edit-product-price').value = product.price;
-
-        // Show the modal
-        $('#editProductModal').modal('show');
-
-        // Save changes when the "Save changes" button is clicked
-        document.querySelector('#save-edit-button').onclick = function () {
-            const updatedProduct = {
-                id: document.querySelector('#edit-product-id').value,
-                name: document.querySelector('#edit-product-name').value,
-                category: document.querySelector('#edit-product-category').value,
-                stock: Number(document.querySelector('#edit-stock-quantity').value),
-                price: parseFloat(document.querySelector('#edit-product-price').value)
-            };
-
-            // Update the product in the products array
-            const index = products.findIndex(p => p.id === productId);
-            if (index !== -1) {
-                products[index] = updatedProduct;
-                renderProducts(); // Re-render the table after update
-                $('#editProductModal').modal('hide'); // Close the modal
-            }
-        };
+    if (name && category && !isNaN(stock) && !isNaN(price)) {
+        products.push({ id, name, category, stock, price });
+        renderProducts();
+        $('#addProductModal').modal('hide'); // Close the modal
+        document.querySelector('#addProductForm').reset(); // Reset the form
+    } else {
+        alert('Please fill in all fields correctly.');
     }
 }
 
-// Function to handle deleting a product
-function deleteProduct(productId) {
-    if (confirm(`Are you sure you want to delete product ${productId}?`)) {
-        products = products.filter(product => product.id !== productId);
+// Function to display the edit product modal
+function showEditProductModal(index) {
+    const product = products[index];
+    document.querySelector('#editProductId').value = product.id;
+    document.querySelector('#editProductName').value = product.name;
+    document.querySelector('#editCategory').value = product.category;
+    document.querySelector('#editStockQuantity').value = product.stock;
+    document.querySelector('#editPrice').value = product.price;
+
+    // Set the save button's onclick to update the product
+    document.querySelector('#saveEditButton').onclick = () => editProduct(index);
+    $('#editProductModal').modal('show');
+}
+
+// Function to edit a product
+function editProduct(index) {
+    const id = document.querySelector('#editProductId').value;
+    const name = document.querySelector('#editProductName').value.trim();
+    const category = document.querySelector('#editCategory').value.trim();
+    const stock = parseInt(document.querySelector('#editStockQuantity').value, 10);
+    const price = parseFloat(document.querySelector('#editPrice').value);
+
+    if (name && category && !isNaN(stock) && !isNaN(price)) {
+        products[index] = { id, name, category, stock, price };
+        renderProducts();
+        $('#editProductModal').modal('hide'); // Close the modal
+    } else {
+        alert('Please fill in all fields correctly.');
+    }
+}
+
+// Function to delete a product
+function deleteProduct(index) {
+    if (confirm(`Are you sure you want to delete product ${products[index].name}?`)) {
+        products.splice(index, 1); // Remove the product from the array
         renderProducts();
     }
 }
 
 // Initialize the product list on page load
-document.addEventListener('DOMContentLoaded', renderProducts);
+document.addEventListener('DOMContentLoaded', () => {
+    renderProducts();
+
+    // Add product event listener
+    document.querySelector('#saveAddButton').addEventListener('click', addProduct);
+});
