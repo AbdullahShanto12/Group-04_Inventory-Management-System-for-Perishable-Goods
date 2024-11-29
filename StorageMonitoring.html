@@ -3,227 +3,244 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Storage Monitoring - Inventory Management System</title>
+    <title>Storage Monitoring</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Source Sans Pro', sans-serif;
+        }
 
-    <!-- Google Font: Source Sans Pro -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
-    <!-- Ionicons -->
-    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-    <!-- Tempusdominus Bootstrap 4 -->
-    <link rel="stylesheet" href="plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
-    <!-- Theme style -->
-    <link rel="stylesheet" href="dist/css/adminlte.min.css">
-    <!-- overlayScrollbars -->
-    <link rel="stylesheet" href="plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+        body {
+            background: linear-gradient(135deg, #f0f4ff, #f7f0ff);
+            min-height: 100vh;
+        }
+
+        .container {
+            display: flex;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            width: 250px;
+            background: linear-gradient(180deg, #1E293B, #0F172A);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .brand-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+
+        .brand-logo img {
+            width: 32px;
+            height: 32px;
+            background: white;
+            border-radius: 50%;
+        }
+
+        .brand-logo span {
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        .nav-item {
+            margin-bottom: 8px;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #e2e8f0;
+            text-decoration: none;
+            padding: 10px;
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
+
+        .nav-link:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-link.active {
+            background: #6366f1;
+            color: white;
+        }
+
+        /* Main Content Styles */
+        .main-content {
+            flex: 1;
+            padding: 20px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-top: 4px solid #6366f1;
+        }
+
+        .storage-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .status-icon {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+
+        .healthy { background: #10b981; }
+        .warning { background: #f59e0b; }
+        .critical { background: #ef4444; }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .metric-box {
+            background: linear-gradient(135deg, #f0f7ff, #e0e7ff);
+            padding: 15px;
+            border-radius: 8px;
+            display: flex;
+            gap: 30px;
+            font-size: 26px;
+        }
+
+        .inventory-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .inventory-item {
+            background: linear-gradient(135deg, #f5f3ff, #ede9fe);
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 18px;
+        }
+
+        .add-form {
+            display: flex;
+            gap: 10px;
+        }
+
+        input, select {
+            padding: 8px;
+            border: 1px solid #e5e7eb;
+            border-radius: 5px;
+            flex: 0;
+        }
+
+        button {
+            background: linear-gradient(135deg, #6366f1, #4f46e5);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        button:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+
+        .progress-bar {
+            background: #f3f4f6;
+            height: 20px;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+
+        .progress {
+            height: 100%;
+            transition: width 0.3s;
+            background: linear-gradient(90deg, #6366f1, #4f46e5);
+        }
+    </style>
 </head>
-<body class="hold-transition sidebar-mini layout-fixed">
-<div class="wrapper">
-
-    <!-- Navbar -->
-    <nav class="main-header navbar navbar-expand navbar-white navbar-light">
-        <ul class="navbar-nav">
-            <li class="nav-item">
-                <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
-            </li>
-            <li class="nav-item d-none d-sm-inline-block">
-                <a href="dashboard.html" class="nav-link">Home</a>
-            </li>
-        </ul>
-    </nav>
-    <!-- /.navbar -->
-
-    <!-- Main Sidebar Container -->
-    <aside class="main-sidebar sidebar-dark-primary elevation-4">
-        <!-- Brand Logo -->
-        <a href="#" class="brand-link">
-            <img src="dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3">
-            <span class="brand-text font-weight-light">Inventory System</span>
-        </a>
-
+<body>
+    <div class="container">
         <!-- Sidebar -->
-        <div class="sidebar">
-            <nav class="mt-2">
-                <ul class="nav nav-pills nav-sidebar flex-column" role="menu" data-accordion="false">
-                    <li class="nav-item">
-                        <a href="dashboard.html" class="nav-link">
-                            <i class="nav-icon fas fa-tachometer-alt"></i>
-                            <p>Dashboard</p>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="admin.html" class="nav-link">
-                            <i class="nav-icon fas fa-tachometer-alt"></i>
-                            <p>Admin Edits</p>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="orders.html" class="nav-link">
-                            <i class="nav-icon fas fa-shopping-cart"></i>
-                            <p>Sales Orders</p>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="products.html" class="nav-link">
-                            <i class="nav-icon fas fa-box"></i>
-                            <p>Products</p>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="warehouses.html" class="nav-link ">
-                            <i class="nav-icon fas fa-warehouse"></i>
-                            <p>Warehouses</p>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="employees.html" class="nav-link">
-                            <i class="nav-icon fas fa-users"></i>
-                            <p>Employees</p>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="alerts.html" class="nav-link">
-                            <i class="nav-icon fas fa-exclamation-triangle"></i>
-                            <p>Alerts</p>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="StorageMonitoring.html" class="nav-link active">
-                            <i class="nav-icon fas fa-thermometer-half"></i>
-                            <p>Storage Monitoring</p>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="login.html" class="nav-link">
-                            <i class="nav-icon fas fa-sign-in-alt"></i>
-                            <p>Log Out</p>
-                        </a>
-                    </li>
-                </ul>
+        <aside class="sidebar">
+            <div class="brand-logo">
+                <img src="dist/img/AdminLTELogo.png" alt="Logo">
+                <span>Inventory System</span>
+            </div>
+            <nav>
+                <div class="nav-item">
+                    <a href="./dashboard.html" class="nav-link">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="orders.html" class="nav-link">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span>Sales Orders</span>
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="products.html" class="nav-link">
+                        <i class="fas fa-box"></i>
+                        <span>Products</span>
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="U_Warehouse_Manager.html" class="nav-link">
+                        <i class="fas fa-warehouse"></i>
+                        <span>Warehouses</span>
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="employees.html" class="nav-link">
+                        <i class="fas fa-users"></i>
+                        <span>Employees</span>
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="alerts.html" class="nav-link">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <span>Alerts</span>
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="StorageMonitoring.html" class="nav-link active">
+                        <i class="fas fa-thermometer-half"></i>
+                        <span>Storage Monitoring</span>
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="login.html" class="nav-link">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>Log Out</span>
+                    </a>
+                </div>
             </nav>
-        </div>
-        <!-- /.sidebar -->
-    </aside>
+        </aside>
 
-    <!-- Content Wrapper -->
-    <div class="content-wrapper">
-        <!-- Content Header -->
-        <section class="content-header">
-            <div class="container-fluid">
-                <div class="row mb-2">
-                    <div class="col-sm-6">
-                        <h1>Storage Monitoring</h1>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Main content -->
-        <section class="content">
-            <div class="container-fluid">
-                <!-- Real-Time Monitoring Section -->
-                <div class="card">
-                    <div class="card-header">
-                        <h3 class="card-title">Real-Time Storage Conditions</h3>
-                    </div>
-                    <div class="card-body">
-                        <div class="row">
-                            <!-- Temperature Monitoring -->
-                            <div class="col-lg-6 col-md-6">
-                                <div class="info-box">
-                                    <span class="info-box-icon bg-warning"><i class="fas fa-thermometer-half"></i></span>
-                                    <div class="info-box-content">
-                                        <span class="info-box-text">Temperature</span>
-                                        <span class="info-box-number" id="temperature-value">-- °C</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Humidity Monitoring -->
-                            <div class="col-lg-6 col-md-6">
-                                <div class="info-box">
-                                    <span class="info-box-icon bg-info"><i class="fas fa-tint"></i></span>
-                                    <div class="info-box-content">
-                                        <span class="info-box-text">Humidity</span>
-                                        <span class="info-box-number" id="humidity-value">-- %</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="text-muted">Last updated: <span id="last-updated">--</span></div>
-                    </div>
-                </div>
-
-                                <!-- Alerts Section -->
-                                <div class="row">
-                                    <div class="col-12">
-                                        <div class="card">
-                                            <div class="card-header">
-                                                <h3 class="card-title"><i class="fas fa-exclamation-triangle"></i> Alerts</h3>
-                                            </div>
-                                            <div class="card-body">
-                                                <ul id="alerts-list" class="list-unstyled">
-                                                    <!-- Dynamic Alerts will be inserted here -->
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-
-
-            </div>
-        </section>
+        <!-- Main Content -->
+        <div class="main-content" id="mainContent"></div>
     </div>
-    <!-- /.content-wrapper -->
 
-    <!-- Footer -->
-    <footer class="main-footer">
-        <strong>Copyright &copy; 2024 <a href="https://google.com">Inventory Management System for Perishable Goods</a>.</strong>
-        All rights reserved.
-    </footer>
-</div>
-<!-- ./wrapper -->
-
-<!-- jQuery -->
-<script src="plugins/jquery/jquery.min.js"></script>
-<!-- Bootstrap 4 -->
-<script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<!-- AdminLTE App -->
-<script src="dist/js/adminlte.min.js"></script>
-
-
-<!-- Real-Time Monitoring Script -->
-<script>
-    // Simulating real-time updates
-    setInterval(() => {
-        const temp = (20 + Math.random() * 10).toFixed(2); // Simulated temperature
-        const humidity = (40 + Math.random() * 20).toFixed(2); // Simulated humidity
-        const now = new Date().toLocaleString();
-
-        // Update the display
-        document.getElementById('temperature-value').innerText = `${temp} °C`;
-        document.getElementById('humidity-value').innerText = `${humidity} %`;
-        document.getElementById('last-updated').innerText = now;
-
-        // Manage alerts
-        const alertsList = document.getElementById('alerts-list');
-        alertsList.innerHTML = ''; // Clear old alerts
-
-        // Threshold checks
-        if (temp > 28) {
-            const tempAlert = `<li><strong>Warning:</strong> Temperature is above safe levels! (${temp} °C)</li>`;
-            alertsList.innerHTML += tempAlert;
-        }
-        if (humidity < 45) {
-            const humidityAlert = `<li><strong>Warning:</strong> Humidity is below safe levels! (${humidity} %)</li>`;
-            alertsList.innerHTML += humidityAlert;
-        }
-    }, 5000);
-</script>
-
-
-
-
+    <script src="StorageMonitoring.js"></script>
 </body>
 </html>
