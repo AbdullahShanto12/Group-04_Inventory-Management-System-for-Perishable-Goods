@@ -1,9 +1,20 @@
+<?php
+session_start();
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.php");
+    exit();
+}
+?>
+
+
+
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Admin - Manage Dashboard Data</title>
+    <title>Inventory Management System</title>
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -21,8 +32,6 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
-
-
 <body class="hold-transition sidebar-mini layout-fixed">
     <div class="wrapper">
         <!-- Navbar -->
@@ -31,9 +40,7 @@
                 <li class="nav-item">
                     <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
                 </li>
-                <li class="nav-item d-none d-sm-inline-block">
-                    <a href="dashboard.html" class="nav-link">Home</a>
-                </li>
+
             </ul>
         </nav>
 
@@ -41,21 +48,20 @@
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <a href="#" class="brand-link">
                 <img src="dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3">
-                <span class="brand-text font-weight-light">Admin Panel</span>
+                <span class="brand-text font-weight-light">Inventory System</span>
             </a>
-        
 
             <div class="sidebar">
                 <nav class="mt-2">
                     <ul class="nav nav-pills nav-sidebar flex-column" role="menu" data-accordion="false">
                         <li class="nav-item">
-                            <a href="dashboard.html" class="nav-link">
+                            <a href="dashboard.php" class="nav-link active">
                                 <i class="nav-icon fas fa-tachometer-alt"></i>
                                 <p>Dashboard</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="admin.html" class="nav-link active">
+                            <a href="admin.html" class="nav-link">
                                 <i class="nav-icon fas fa-tachometer-alt"></i>
                                 <p>Admin Edits</p>
                             </a>
@@ -108,10 +114,6 @@
             </div>
         </aside>
 
-
-
-
-
         <!-- Content Wrapper -->
         <div class="content-wrapper">
             <!-- Content Header -->
@@ -119,7 +121,7 @@
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-sm-6">
-                            <h1>Manage Dashboard Data</h1>
+                            <h1>Dashboard</h1>
                         </div>
                     </div>
                 </div>
@@ -128,93 +130,111 @@
             <!-- Main content -->
             <section class="content">
                 <div class="container-fluid">
-                    <form id="updateForm">
+                    <!-- Dashboard Section -->
+                    <div id="dashboard" class="content-section">
                         <div class="row">
-                            <!-- Dashboard Data Section -->
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label>New Orders</label>
-                                    <p id="currentNewOrders">0</p>
-                                    <label for="newOrdersInput">Update New Orders</label>
-                                    <input type="number" id="newOrdersInput" class="form-control" value="">
+                            <!-- New Orders -->
+                            <div class="col-lg-3 col-6">
+                                <div class="small-box bg-info">
+                                    <div class="inner">
+                                        <h3 id="newOrdersCount"></h3>
+                                        <p>New Orders</p>
+                                    </div>
+                                    <div class="icon">
+                                        <i class="ion ion-bag"></i>
+                                    </div>
                                 </div>
                             </div>
-
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label>Bounce Rate</label>
-                                    <p id="currentBounceRate">0%</p>
-                                    <label for="bounceRateInput">Update Bounce Rate (%)</label>
-                                    <input type="number" id="bounceRateInput" class="form-control" value="">
+                            <!-- Bounce Rate -->
+                            <div class="col-lg-3 col-6">
+                                <div class="small-box bg-success">
+                                    <div class="inner">
+                                        <h3 id="bounceRatePercent"></h3>
+                                        <p>Bounce Rate</p>
+                                    </div>
+                                    <div class="icon">
+                                        <i class="ion ion-stats-bars"></i>
+                                    </div>
                                 </div>
                             </div>
-
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label>User Registrations</label>
-                                    <p id="currentUserRegistrations">0</p>
-                                    <label for="userRegistrationsInput">Update User Registrations</label>
-                                    <input type="number" id="userRegistrationsInput" class="form-control" value="">
+                            <!-- User Registrations -->
+                            <div class="col-lg-3 col-6">
+                                <div class="small-box bg-warning">
+                                    <div class="inner">
+                                        <h3 id="userRegistrationsCount"></h3>
+                                        <p>User Registrations</p>
+                                    </div>
+                                    <div class="icon">
+                                        <i class="ion ion-person-add"></i>
+                                    </div>
                                 </div>
                             </div>
-
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label>Unique Visitors</label>
-                                    <p id="currentUniqueVisitors">0</p>
-                                    <label for="uniqueVisitorsInput">Update Unique Visitors</label>
-                                    <input type="number" id="uniqueVisitorsInput" class="form-control" value="">
+                            <!-- Unique Visitors -->
+                            <div class="col-lg-3 col-6">
+                                <div class="small-box bg-danger">
+                                    <div class="inner">
+                                        <h3 id="uniqueVisitorsCount"></h3>
+                                        <p>Unique Visitors</p>
+                                    </div>
+                                    <div class="icon">
+                                        <i class="ion ion-pie-graph"></i>
+                                    </div>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Sales Charts -->
+                        <!-- Weekly Sales Chart -->
                         <div class="row">
-                            <!-- Weekly Sales Chart -->
-                            <div class="col-md-6">
-                                <h4>Weekly Sales</h4>
-                                <canvas id="weeklySalesChart"></canvas>
-                                <label for="weeklySalesInput">Update Weekly Sales (comma separated)</label>
-                                <input type="text" id="weeklySalesInput" class="form-control" value="">
+                            <div class="col-lg-6 col-md-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h3 class="card-title">Weekly Sales</h3>
+                                    </div>
+                                    <div class="card-body">
+                                        <canvas id="weeklySalesChart"></canvas>
+                                    </div>
+                                </div>
                             </div>
 
                             <!-- Monthly Sales Chart -->
-                            <div class="col-md-6">
-                                <h4>Monthly Sales</h4>
-                                <canvas id="monthlySalesChart"></canvas>
-                                <label for="monthlySalesInput">Update Monthly Sales (comma separated)</label>
-                                <input type="text" id="monthlySalesInput" class="form-control" value="">
+                            <div class="col-lg-6 col-md-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h3 class="card-title">Monthly Sales</h3>
+                                    </div>
+                                    <div class="card-body">
+                                        <canvas id="monthlySalesChart"></canvas>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
-                        <!-- Stock Alerts -->
+                        <!-- Stock Alerts for Perishables -->
                         <div class="row">
-                            <div class="col-md-6">
-                                <h4>Stock Alerts</h4>
-                                <ul id="currentStockAlerts">
-                                    <!-- Stock alerts will be shown here -->
-                                </ul>
-                                <label for="stockAlertsInput">Update Stock Alerts (JSON format)</label>
-                                <textarea id="stockAlertsInput" class="form-control" rows="4"></textarea>
+                            <div class="col-lg-6 col-md-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h3 class="card-title">Stock Alerts</h3>
+                                    </div>
+                                    <div class="card-body">
+                                        <ul id="stockAlertsList"></ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Latest Orders -->
+                            <div class="col-lg-6 col-md-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h3 class="card-title">Latest Orders</h3>
+                                    </div>
+                                    <div class="card-body">
+                                        <ul id="latestOrdersList"></ul>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-
-                        <!-- Latest Orders -->
-                        <div class="row">
-                            <div class="col-md-6">
-                                <h4>Latest Orders</h4>
-                                <ul id="currentLatestOrders">
-                                    <!-- Latest orders will be shown here -->
-                                </ul>
-                                <label for="latestOrdersInput">Update Latest Orders (JSON format)</label>
-                                <textarea id="latestOrdersInput" class="form-control" rows="4"></textarea>
-                            </div>
-                        </div>
-
-                        <div class="col-12">
-                            <button type="submit" class="btn btn-primary">Update Dashboard Data</button>
-                        </div>
-                    </form>
+                    </div>
                 </div>
             </section>
         </div>
@@ -235,6 +255,7 @@
     <!-- AdminLTE App -->
     <script src="dist/js/adminlte.min.js"></script>
     <!-- Custom Dashboard JS -->
-    <script src="admin.js"></script>
+    <script src="dashboard.js"></script>
 </body>
+
 </html>
