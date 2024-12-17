@@ -73,15 +73,9 @@ $conn->close();
             <nav class="mt-2">
                 <ul class="nav nav-pills nav-sidebar flex-column" role="menu" data-accordion="false">
                     <li class="nav-item">
-                        <a href="dashboard.html" class="nav-link">
+                        <a href="dashboard.php" class="nav-link">
                             <i class="nav-icon fas fa-tachometer-alt"></i>
                             <p>Dashboard</p>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="admin.html" class="nav-link">
-                        <i class="nav-icon fas fa-user-cog"></i>
-                        <p>Admin Edits</p>
                         </a>
                     </li>
                     <li class="nav-item">
@@ -103,7 +97,7 @@ $conn->close();
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="employees.html" class="nav-link">
+                        <a href="employees.php" class="nav-link">
                             <i class="nav-icon fas fa-users"></i>
                             <p>Employees</p>
                         </a>

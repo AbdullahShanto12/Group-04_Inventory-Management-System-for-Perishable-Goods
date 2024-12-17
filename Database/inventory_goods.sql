@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 07, 2024 at 01:43 PM
+-- Generation Time: Dec 17, 2024 at 06:33 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -58,36 +58,64 @@ INSERT INTO `alerts` (`alert_id`, `alert_type`, `description`, `alert_date`, `st
 --
 
 CREATE TABLE `employees` (
-  `id` varchar(10) NOT NULL,
-  `NAME` varchar(100) NOT NULL,
+  `employee_id` varchar(10) NOT NULL,
+  `name` varchar(100) NOT NULL,
   `department` varchar(50) NOT NULL,
-  `phone` varchar(15) NOT NULL,
-  `jobTitle` varchar(100) NOT NULL,
-  `location` varchar(50) NOT NULL,
-  `yearsOfService` int(11) NOT NULL
+  `job_title` varchar(50) NOT NULL,
+  `location` varchar(100) NOT NULL,
+  `years_of_service` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `employees`
 --
 
-INSERT INTO `employees` (`id`, `NAME`, `department`, `phone`, `jobTitle`, `location`, `yearsOfService`) VALUES
-('E005', 'Emily Davis', 'HR', '555-7890', 'Recruiter', 'Seattle', 4),
-('E006', 'Frank Thomas', 'Sales', '555-6543', 'Account Executive', 'New York', 6),
-('E007', 'Grace Miller', 'IT', '555-3456', 'Systems Analyst', 'San Francisco', 5),
-('E008', 'Hannah Taylor', 'Marketing', '555-8764', 'Brand Manager', 'Chicago', 3),
-('E009', 'Ian Wilson', 'Admin', '555-6789', 'Operations Manager', 'Los Angeles', 8),
-('E010', 'Julia Moore', 'HR', '555-2345', 'HR Specialist', 'Seattle', 2),
-('E011', 'Kevin Garcia', 'Sales', '555-9876', 'Sales Representative', 'New York', 4),
-('E012', 'Laura Hernandez', 'IT', '555-3210', 'Network Engineer', 'San Francisco', 6),
-('E013', 'Michael Anderson', 'Marketing', '555-7654', 'Social Media Manager', 'Chicago', 2),
-('E014', 'Natalie Martinez', 'Admin', '555-5432', 'Executive Assistant', 'Los Angeles', 9),
-('E015', 'Oliver Brown', 'HR', '555-8763', 'HR Generalist', 'Seattle', 3),
-('E016', 'Pamela Jackson', 'Sales', '555-6541', 'Sales Coordinator', 'New York', 5),
-('E017', 'Quentin Lee', 'IT', '555-9870', 'Data Analyst', 'San Francisco', 4),
-('E018', 'Rachel Clark', 'Marketing', '555-4323', 'Content Strategist', 'Chicago', 1),
-('E019', 'Steven Harris', 'Admin', '555-7653', 'Administrative Assistant', 'Los Angeles', 6),
-('E020', 'Tina Evans', 'HR', '555-3214', 'Compensation Analyst', 'Seattle', 7);
+INSERT INTO `employees` (`employee_id`, `name`, `department`, `job_title`, `location`, `years_of_service`) VALUES
+('A001', 'Olivia Taylor', 'Admin', 'Office Manager', 'Houston', 10),
+('A002', 'Benjamin Lee', 'Admin', 'Administrative Assistant', 'Atlanta', 4),
+('A003', 'Charlotte White', 'Admin', 'Facilities Coordinator', 'Phoenix', 6),
+('HR001', 'Isabella Harris', 'HR', 'HR Manager', 'Philadelphia', 8),
+('HR002', 'Lucas Martinez', 'HR', 'Recruitment Specialist', 'San Diego', 5),
+('HR003', 'Mia Walker', 'HR', 'Employee Relations Officer', 'Las Vegas', 2),
+('IT001', 'Alice Johnson', 'IT', 'Software Engineer', 'San Francisco', 4),
+('IT002', 'Raj Patel', 'IT', 'System Administrator', 'Dallas', 7),
+('IT003', 'Emily Chen', 'IT', 'Data Analyst', 'Seattle', 2),
+('M001', 'Sophia Brown', 'Marketing', 'Marketing Manager', 'Boston', 6),
+('M002', 'Liam Wilson', 'Marketing', 'Content Strategist', 'Miami', 3),
+('M003', 'Ethan Davis', 'Marketing', 'SEO Specialist', 'Denver', 2),
+('S001', 'John Smith', 'Sales', 'Regional Sales Manager', 'New York', 8),
+('S002', 'Jane Doe', 'Sales', 'Sales Executive', 'Los Angeles', 3),
+('S003', 'Carlos Martinez', 'Sales', 'Account Manager', 'Chicago', 5);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `inventory`
+--
+
+CREATE TABLE `inventory` (
+  `id` int(11) NOT NULL,
+  `name` varchar(100) NOT NULL,
+  `quantity` int(11) NOT NULL DEFAULT 0,
+  `price` decimal(10,2) NOT NULL,
+  `description` text DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `inventory`
+--
+
+INSERT INTO `inventory` (`id`, `name`, `quantity`, `price`, `description`) VALUES
+(1, 'Dell Inspiron Laptop', 15, 7500.00, '15.6 inch, 8GB RAM, 256GB SSD, Windows 11'),
+(2, 'Logitech Wireless Mouse', 50, 25.99, 'Ergonomic design, USB receiver, compatible with Windows and Mac'),
+(3, 'Samsung Galaxy A54', 30, 349.00, '128GB storage, 5G compatible, 6.4-inch AMOLED display'),
+(4, 'HP OfficeJet Pro Printer', 10, 150.50, 'All-in-one wireless printer, scanner, and copier'),
+(5, 'Standing Desk', 8, 299.99, 'Adjustable height desk, 48x30 inches, solid wood top'),
+(6, 'Bose Noise Cancelling Headphones', 20, 199.00, 'Wireless Bluetooth, 20-hour battery life, with microphone'),
+(7, 'Canon EOS 2000D Camera', 5, 450.00, '24.1 MP DSLR camera, with 18-55mm lens kit'),
+(8, 'Apple MacBook Pro', 12, 1800.00, '13-inch, M2 chip, 8GB RAM, 512GB SSD'),
+(9, 'Google Nest Smart Thermostat', 25, 129.99, 'Energy-efficient smart thermostat with Wi-Fi control'),
+(10, 'Anker Power Bank', 40, 49.99, '20,000mAh portable charger, USB-C and USB-A ports');
 
 -- --------------------------------------------------------
 
@@ -112,16 +140,14 @@ INSERT INTO `orders` (`order_id`, `customer_name`, `order_date`, `status`, `tota
 (2, 'Bob Smith', '2024-12-02', 'Pending', 250.00),
 (3, 'Charlie Davis', '2024-12-03', 'Processing', 99.99),
 (4, 'Diana White', '2024-12-04', 'Cancelled', 0.00),
-(5, 'Evan Brown', '2024-12-05', 'Completed', 500.20),
+(5, 'Evan Brown', '2024-12-05', 'Completed', 50.20),
 (6, 'Fiona Green', '2024-12-06', 'Processing', 125.49),
 (7, 'George Hill', '2024-12-07', 'Pending', 80.00),
 (8, 'Hannah Adams', '2024-12-07', 'Completed', 300.10),
-(9, 'Ian Black', '2024-12-06', 'Cancelled', 0.00),
-(10, 'alam', '2024-12-20', 'Completed', 3600.00),
-(10234, 'Abdullah', '2024-10-10', 'Completed', 450.00),
-(10235, 'Shanto', '2024-10-15', 'Pending', 220.00),
-(10236, 'Esha', '2024-10-20', 'Processing', 330.00),
-(10237, 'Shakib', '2024-10-22', 'Cancelled', 150.00);
+(9, 'Ian Black', '2024-12-06', 'Cancelled', 10.00),
+(10, 'Charlie Davis', '2024-12-13', 'Completed', 100.00),
+(11, 'Charlie ', '2024-12-27', 'Processing', 200.00),
+(12, 'Davis', '2024-12-12', 'Processing', 300.00);
 
 -- --------------------------------------------------------
 
@@ -159,7 +185,37 @@ INSERT INTO `products` (`product_id`, `product_name`, `category`, `stock_quantit
 ('P007', 'Mouse', 'Accessories', 300, 19.99),
 ('P008', 'Smartwatch', 'Electronics', 40, 249.99),
 ('P009', 'Printer', 'Office Supplies', 20, 159.99),
-('P010', 'Desk Lamp', 'Office Supplies', 80, 39.99);
+('P010', 'Desk Lamp', 'Office Supplies', 80, 39.99),
+('11', 'onion', 'vegatable', 11, 111.00);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `reports`
+--
+
+CREATE TABLE `reports` (
+  `id` int(11) NOT NULL,
+  `report_name` varchar(100) DEFAULT NULL,
+  `report_date` timestamp NOT NULL DEFAULT current_timestamp(),
+  `details` text DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `reports`
+--
+
+INSERT INTO `reports` (`id`, `report_name`, `report_date`, `details`) VALUES
+(1, 'Monthly Sales Report', '2024-12-01 03:00:00', 'Details on sales performance for November 2024'),
+(2, 'Inventory Audit', '2024-12-05 08:30:00', 'Report on discrepancies found during inventory check'),
+(3, 'Employee Performance Review', '2024-11-30 04:00:00', 'Summary of performance reviews conducted in Q4 2024'),
+(4, 'Marketing Campaign ROI', '2024-11-28 05:00:00', 'Analysis of ROI from the Black Friday marketing campaign'),
+(5, 'Customer Feedback Analysis', '2024-11-25 10:00:00', 'Insights from customer surveys conducted in November 2024'),
+(6, 'Quarterly Financial Report', '2024-10-15 04:00:00', 'Financial summary for Q3 2024, including profit/loss statement'),
+(7, 'IT Security Assessment', '2024-12-12 03:30:00', 'Evaluation of current IT security systems and vulnerabilities'),
+(8, 'New Product Launch Metrics', '2024-12-10 09:00:00', 'Performance analysis of the newly launched product line'),
+(9, 'Compliance Audit Report', '2024-11-20 07:00:00', 'Report on compliance with company policies and industry regulations'),
+(10, 'Annual Revenue Summary', '2024-12-15 11:00:00', 'Comprehensive summary of revenues for 2024.');
 
 -- --------------------------------------------------------
 
@@ -179,6 +235,7 @@ CREATE TABLE `storage` (
 --
 
 INSERT INTO `storage` (`storage_id`, `storage_name`, `capacity`, `used_capacity`) VALUES
+('11', '11', 11, 11),
 ('S001', 'Main Storage', 1000, 750),
 ('S002', 'Secondary Storage', 500, 300),
 ('S003', 'Backup Storage', 300, 150),
@@ -213,6 +270,18 @@ INSERT INTO `users` (`id`, `full_name`, `email`, `password`, `role`) VALUES
 (0, 'ABDULLAH', 'abdullah@gmail.com', '$2y$10$8.BedMM8yMhMdsym0dYyquxcZq8lZ/4cca0sLy0UuQCUxlhmAI93W', 'editor_Sales'),
 (0, 'ABDULLAH', 'abdullah@gmail.com', '$2y$10$U8wsmTVNSCY4S7iI6irEXuiJjqsfcLJJvn0EHksjHyCRVdbX6Uuni', 'editor_Product'),
 (0, 'ABDULLAH', 'abdullah@gmail.com', '$2y$10$T9uqzsCkkxbvhVVYaWPoUuqTxbbqZtDXzyBleD3rZbRMHshjKqJMO', 'editor_Warehouse');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `visitors`
+--
+
+CREATE TABLE `visitors` (
+  `id` int(11) NOT NULL,
+  `visitor_ip` varchar(45) DEFAULT NULL,
+  `visit_date` date DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -253,7 +322,7 @@ ALTER TABLE `alerts`
 -- Indexes for table `employees`
 --
 ALTER TABLE `employees`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`employee_id`);
 
 --
 -- Indexes for table `orders`

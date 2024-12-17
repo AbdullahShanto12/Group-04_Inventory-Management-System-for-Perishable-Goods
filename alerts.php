@@ -79,12 +79,7 @@ $conn->close();
                             <p>Dashboard</p>
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a href="admin.html" class="nav-link">
-                        <i class="nav-icon fas fa-user-cog"></i>
-                        <p>Admin Edits</p>
-                        </a>
-                    </li>
+
                     <li class="nav-item">
                         <a href="orders.php" class="nav-link">
                             <i class="nav-icon fas fa-shopping-cart"></i>
@@ -104,7 +99,7 @@ $conn->close();
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="employees.html" class="nav-link">
+                        <a href="employees.php" class="nav-link">
                             <i class="nav-icon fas fa-users"></i>
                             <p>Employees</p>
                         </a>
