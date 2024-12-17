@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 17, 2024 at 06:33 PM
+-- Generation Time: Dec 17, 2024 at 09:26 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -49,7 +49,8 @@ INSERT INTO `alerts` (`alert_id`, `alert_type`, `description`, `alert_date`, `st
 (7, 'System', 'New software version available.', '2024-12-07', 'Active'),
 (8, 'Order', 'Order #1003 completed.', '2024-12-06', 'Resolved'),
 (9, 'Inventory', 'New stock added for product P002.', '2024-12-07', 'Active'),
-(10, 'System', 'Backup completed successfully.', '2024-12-07', 'Resolved');
+(10, 'System', 'Backup completed successfully.', '2024-12-07', 'Resolved'),
+(11, 'System', 'Backup Complete', '2024-12-26', 'Active');
 
 -- --------------------------------------------------------
 
@@ -136,18 +137,23 @@ CREATE TABLE `orders` (
 --
 
 INSERT INTO `orders` (`order_id`, `customer_name`, `order_date`, `status`, `total_amount`) VALUES
-(1, 'Alice Johnson', '2024-12-01', 'Completed', 150.75),
-(2, 'Bob Smith', '2024-12-02', 'Pending', 250.00),
-(3, 'Charlie Davis', '2024-12-03', 'Processing', 99.99),
-(4, 'Diana White', '2024-12-04', 'Cancelled', 0.00),
-(5, 'Evan Brown', '2024-12-05', 'Completed', 50.20),
-(6, 'Fiona Green', '2024-12-06', 'Processing', 125.49),
+(1, 'Alice Johnson', '2024-11-05', 'Completed', 150.75),
+(2, 'Bob Smith', '2024-10-02', 'Pending', 250.00),
+(3, 'Charlie Davis', '2024-12-03', 'Processing', 199.99),
+(4, 'Diana White', '2024-09-05', 'Cancelled', 0.00),
+(5, 'Evan Brown', '2024-08-05', 'Completed', 500.20),
+(6, 'Fiona Green', '2024-07-06', 'Processing', 125.49),
 (7, 'George Hill', '2024-12-07', 'Pending', 80.00),
 (8, 'Hannah Adams', '2024-12-07', 'Completed', 300.10),
 (9, 'Ian Black', '2024-12-06', 'Cancelled', 10.00),
 (10, 'Charlie Davis', '2024-12-13', 'Completed', 100.00),
 (11, 'Charlie ', '2024-12-27', 'Processing', 200.00),
-(12, 'Davis', '2024-12-12', 'Processing', 300.00);
+(12, 'Davis', '2024-12-12', 'Processing', 300.00),
+(13, 'shanto', '2024-12-11', 'Completed', 300.00),
+(14, 'alam', '2025-01-09', 'Completed', 200.00),
+(15, 'Esha', '2024-12-27', 'Completed', 300.00),
+(16, 'abdullah', '2024-11-19', 'Completed', 300.00),
+(17, 'shanto', '2024-12-27', 'Processing', 300.00);
 
 -- --------------------------------------------------------
 
@@ -171,7 +177,6 @@ INSERT INTO `products` (`product_id`, `product_name`, `category`, `stock_quantit
 ('12', 'potato', 'vegatable', 1000, 100.00),
 ('15', 'banana', 'fruits', 30, 100.00),
 ('14', 'apple', 'fruits', 30, 100.00),
-('11', 'onion', 'vegatable', 11, 11.00),
 ('101', 'Milk - Full Cream', 'Dairy', 250, 3.50),
 ('102', 'Cheddar Cheese', 'Dairy', 120, 5.25),
 ('103', 'Organic Eggs', 'Eggs', 450, 2.00),
@@ -186,7 +191,7 @@ INSERT INTO `products` (`product_id`, `product_name`, `category`, `stock_quantit
 ('P008', 'Smartwatch', 'Electronics', 40, 249.99),
 ('P009', 'Printer', 'Office Supplies', 20, 159.99),
 ('P010', 'Desk Lamp', 'Office Supplies', 80, 39.99),
-('11', 'onion', 'vegatable', 11, 111.00);
+('P017', 'potato', 'vegatable', 100, 1000.00);
 
 -- --------------------------------------------------------
 
@@ -350,7 +355,7 @@ ALTER TABLE `warehouses`
 -- AUTO_INCREMENT for table `alerts`
 --
 ALTER TABLE `alerts`
-  MODIFY `alert_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `alert_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `orders`
