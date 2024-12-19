@@ -70,7 +70,7 @@ $conn->close();
             margin-left: 250px;
         }
         .content-wrapper {
-            margin-left: 250px;
+            margin-left: 50px;
             padding: 20px;
         }
         .brand-link {
@@ -91,6 +91,47 @@ $conn->close();
             margin-left: 10px;
             margin-top: 20px;
         }
+
+
+
+    /* Ensure the wrapper takes full height */
+    html, body {
+        height: 100%;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+    }
+
+    /* Main wrapper to flex and grow */
+    .wrapper {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+    }
+
+    /* Content wrapper should grow to fill available space */
+    .content-wrapper {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+    }
+
+    /* Footer styles to stay at the bottom */
+    footer {
+        background: #f8f9fa; /* Light background for the footer */
+        text-align: center;
+        padding: 10px 20px;
+        border-top: 1px solid #dee2e6;
+        flex-shrink: 0;
+    }
+
+
+
+
+
+
+
+
         .nav-sidebar {
             display: flex;
             flex-direction: column;

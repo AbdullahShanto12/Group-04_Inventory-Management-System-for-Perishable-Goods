@@ -53,6 +53,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 case 'editor_Warehouse':
                     header("Location: U_Warehouse_Manager.php");
                     break;
+                case 'customer':
+                    header("Location: C_My-Product.html");
+                    break;
                 default:
                     echo "Role not recognized.";
                     break;

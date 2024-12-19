@@ -87,6 +87,12 @@ $conn->close();
                         </a>
                     </li>
                     <li class="nav-item">
+                        <a href="Customer_Order.php" class="nav-link ">
+                            <i class="nav-icon fas fa-shopping-cart"></i>
+                            <p>Customer Order</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a href="products.php" class="nav-link">
                             <i class="nav-icon fas fa-box"></i>
                             <p>Products</p>

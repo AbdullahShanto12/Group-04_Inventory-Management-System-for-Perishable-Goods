@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 17, 2024 at 09:26 PM
+-- Generation Time: Dec 20, 2024 at 12:00 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -152,8 +152,46 @@ INSERT INTO `orders` (`order_id`, `customer_name`, `order_date`, `status`, `tota
 (13, 'shanto', '2024-12-11', 'Completed', 300.00),
 (14, 'alam', '2025-01-09', 'Completed', 200.00),
 (15, 'Esha', '2024-12-27', 'Completed', 300.00),
-(16, 'abdullah', '2024-11-19', 'Completed', 300.00),
-(17, 'shanto', '2024-12-27', 'Processing', 300.00);
+(16, 'abdullah', '2024-11-19', 'Completed', 300.00);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `order_items`
+--
+
+CREATE TABLE `order_items` (
+  `id` int(11) NOT NULL,
+  `order_id` int(11) NOT NULL,
+  `product_name` varchar(255) NOT NULL,
+  `price` decimal(10,2) NOT NULL,
+  `quantity` int(11) NOT NULL,
+  `subtotal` decimal(10,2) NOT NULL,
+  `payment_method` varchar(50) NOT NULL,
+  `total` decimal(10,2) NOT NULL,
+  `order_date` datetime NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `order_items`
+--
+
+INSERT INTO `order_items` (`id`, `order_id`, `product_name`, `price`, `quantity`, `subtotal`, `payment_method`, `total`, `order_date`) VALUES
+(1, 33662232, 'Smartphone', 500.00, 1, 500.00, 'cashOnDelivery', 550.00, '2024-12-19 21:35:52'),
+(2, 3030472, 'Smartphone', 500.00, 3, 1500.00, 'paypal', 1650.00, '2024-12-19 22:04:27'),
+(3, 30209280, 'Smartphone', 500.00, 2, 1000.00, 'creditCard', 2699.40, '2024-12-20 00:27:29'),
+(4, 30209280, 'Laptop', 700.00, 2, 1400.00, 'creditCard', 2699.40, '2024-12-20 00:27:29'),
+(5, 30209280, 'T-Shirt', 15.00, 3, 45.00, 'creditCard', 2699.40, '2024-12-20 00:27:29'),
+(6, 30209280, 'Apples', 3.00, 3, 9.00, 'creditCard', 2699.40, '2024-12-20 00:27:29'),
+(7, 66267654, 'Smartphone', 500.00, 1, 500.00, 'paypal', 616.00, '2024-12-20 00:27:50'),
+(8, 66267654, 'T-Shirt', 15.00, 4, 60.00, 'paypal', 616.00, '2024-12-20 00:27:50'),
+(9, 66713923, 'Smartphone', 500.00, 3, 1500.00, 'paypal', 3960.00, '2024-12-20 00:28:35'),
+(23, 66713924, 'Smartphone', 500.00, 1, 500.00, 'cashOnDelivery', 550.00, '2024-12-19 21:35:07'),
+(24, 66713925, 'Smartphone', 500.00, 1, 500.00, 'cashOnDelivery', 550.00, '2024-12-19 21:36:53'),
+(25, 66713926, 'Smartphone', 500.00, 1, 500.00, 'cashOnDelivery', 550.00, '2024-12-19 21:37:01'),
+(26, 96956982, 'Laptop', 700.00, 3, 2100.00, 'cashOnDelivery', 4042.50, '2024-12-20 02:45:45'),
+(27, 96956982, 'Smartphone', 500.00, 3, 1500.00, 'cashOnDelivery', 4042.50, '2024-12-20 02:45:45'),
+(28, 96956982, 'T-Shirt', 15.00, 5, 75.00, 'cashOnDelivery', 4042.50, '2024-12-20 02:45:45');
 
 -- --------------------------------------------------------
 
@@ -174,9 +212,6 @@ CREATE TABLE `products` (
 --
 
 INSERT INTO `products` (`product_id`, `product_name`, `category`, `stock_quantity`, `price`) VALUES
-('12', 'potato', 'vegatable', 1000, 100.00),
-('15', 'banana', 'fruits', 30, 100.00),
-('14', 'apple', 'fruits', 30, 100.00),
 ('101', 'Milk - Full Cream', 'Dairy', 250, 3.50),
 ('102', 'Cheddar Cheese', 'Dairy', 120, 5.25),
 ('103', 'Organic Eggs', 'Eggs', 450, 2.00),
@@ -271,10 +306,11 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `full_name`, `email`, `password`, `role`) VALUES
-(0, 'ABDULLAH', 'abdullah@gmail.com', '$2y$10$bgcmsr.dpzFqunCF0LZbM.cHHxf/stMODaNpu74J3tGAEYyHMKpZ2', 'admin'),
 (0, 'ABDULLAH', 'abdullah@gmail.com', '$2y$10$8.BedMM8yMhMdsym0dYyquxcZq8lZ/4cca0sLy0UuQCUxlhmAI93W', 'editor_Sales'),
 (0, 'ABDULLAH', 'abdullah@gmail.com', '$2y$10$U8wsmTVNSCY4S7iI6irEXuiJjqsfcLJJvn0EHksjHyCRVdbX6Uuni', 'editor_Product'),
-(0, 'ABDULLAH', 'abdullah@gmail.com', '$2y$10$T9uqzsCkkxbvhVVYaWPoUuqTxbbqZtDXzyBleD3rZbRMHshjKqJMO', 'editor_Warehouse');
+(0, 'ABDULLAH', 'abdullah@gmail.com', '$2y$10$T9uqzsCkkxbvhVVYaWPoUuqTxbbqZtDXzyBleD3rZbRMHshjKqJMO', 'editor_Warehouse'),
+(0, 'ABDULLAH', 'abdullah@gmail.com', '$2y$10$UVrLxihIgtX.ducYGtQYgux0EH1T2wJkIEVYJdF81Wnw.PsTYMFy2', 'customer'),
+(0, 'ABDULLAH', 'abdullah@gmail.com', '$2y$10$DcJXHQVSfefkGCR430dHJu5Q/I4v91pqOeMjYlMMLuMuwKn3aGD4K', 'admin');
 
 -- --------------------------------------------------------
 
@@ -336,6 +372,13 @@ ALTER TABLE `orders`
   ADD PRIMARY KEY (`order_id`);
 
 --
+-- Indexes for table `order_items`
+--
+ALTER TABLE `order_items`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `order_id` (`order_id`);
+
+--
 -- Indexes for table `storage`
 --
 ALTER TABLE `storage`
@@ -362,6 +405,12 @@ ALTER TABLE `alerts`
 --
 ALTER TABLE `orders`
   MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10238;
+
+--
+-- AUTO_INCREMENT for table `order_items`
+--
+ALTER TABLE `order_items`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
 -- AUTO_INCREMENT for table `warehouses`

@@ -30,7 +30,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Execute the query and check for success
     if ($stmt->execute()) {
-        echo "New user registered successfully.";
+        echo "Welcome to the Inventory System! Your account has been created.";
     } else {
         echo "Error: " . $stmt->error;
     }
@@ -39,8 +39,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $stmt->close();
     $conn->close();
 }
-?>
 
+
+
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -48,23 +50,44 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Signup</title>
-
     <!-- Font Awesome -->
     <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
-    <!-- Theme style -->
+    <!-- AdminLTE -->
     <link rel="stylesheet" href="dist/css/adminlte.min.css">
+    <!-- Custom CSS -->
+    <style>
+        body {
+            background: linear-gradient(to right,rgb(212, 56, 8), #2575fc);
+            color: white;
+        }
+        .register-box {
+            margin: 200px auto;
+            width: 400px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 35px;
+            box-shadow: 20px 4px 20px rgba(0, 0, 0, 0.2);
+            padding: 30px;
+        }
+        .btn-primary {
+            background-color: #6a11cb;
+            border: none;
+        }
+        .btn-primary:hover {
+            background-color: #4c0ba6;
+        }
+    </style>
+
+
 </head>
-<body class="hold-transition register-page">
+<body>
 <div class="register-box">
     <div class="register-logo">
-        <a href="#"><b>Inventory</b>System</a>
+        <a href=""><b>Inventory</b>System</a>
     </div>
-
     <div class="card">
         <div class="card-body register-card-body">
             <p class="login-box-msg">Register a new membership</p>
-
-            <form method="POST" action="signup.php">
+            <form id="signupForm" method="POST" action="signup.php">
                 <div class="input-group mb-3">
                     <input type="text" id="fullName" name="fullName" class="form-control" placeholder="Full name" required>
                     <div class="input-group-append">
@@ -73,7 +96,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         </div>
                     </div>
                 </div>
-
                 <div class="input-group mb-3">
                     <input type="email" id="email" name="email" class="form-control" placeholder="Email" required>
                     <div class="input-group-append">
@@ -82,7 +104,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         </div>
                     </div>
                 </div>
-
                 <div class="input-group mb-3">
                     <input type="password" id="password" name="password" class="form-control" placeholder="Password" required>
                     <div class="input-group-append">
@@ -91,25 +112,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         </div>
                     </div>
                 </div>
-
-                <!-- Role Selection -->
                 <div class="input-group mb-3">
-                    <label for="role" class="form-control-label">Select Role:</label>
                     <select id="role" name="role" class="form-control" required>
-                    <option value="" disabled selected>Select your role</option>
+                        <option value="" disabled selected>Select your role</option>
                         <option value="admin">Admin</option>
                         <option value="editor_Sales">Sales Officer</option>
                         <option value="editor_Product">Product Officer</option>
                         <option value="editor_Warehouse">Warehouse Manager</option>
+                        <option value="customer">Customer</option>
                     </select>
                 </div>
-
                 <div class="row">
                     <div class="col-8">
                         <div class="icheck-primary">
                             <input type="checkbox" id="agree" required>
                             <label for="agree">
-                                I agree to the <a href="#">terms and conditions</a>
+                                I agree to the <a href="images/Terms.pdf" target="_blank">terms and conditions</a>
                             </label>
                         </div>
                     </div>
@@ -118,12 +136,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     </div>
                 </div>
             </form>
-
             <p class="mb-1">
                 <a href="login.html">I already have a membership</a>
             </p>
         </div>
     </div>
 </div>
+
+
+
+
 </body>
 </html>

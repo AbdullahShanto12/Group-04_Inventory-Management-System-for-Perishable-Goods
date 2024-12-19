@@ -8,14 +8,74 @@
 
     <!-- Font Awesome -->
     <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
-    <!-- Theme style -->
+    <!-- AdminLTE -->
     <link rel="stylesheet" href="dist/css/adminlte.min.css">
+    
+    <!-- Custom CSS -->
+    <style>
+        body {
+            background: linear-gradient(to right, #095fcf, #9e15d4);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .login-box {
+            width: 400px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 35px;
+            box-shadow: 20px 4px 20px rgba(0, 0, 0, 0.2);
+            padding: 30px;
+        }
+
+        .btn-primary {
+            background-color: #6a11cb;
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background-color: #4c0ba6;
+        }
+
+        .login-logo a {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #6a11cb;
+        }
+
+        .input-group .form-control {
+            border-radius: 15px;
+        }
+
+        .input-group-text {
+            border-radius: 15px;
+        }
+
+        .row .col-4 button {
+            border-radius: 15px;
+        }
+
+        .icheck-primary label {
+            color: #fff;
+        }
+
+        .login-box-msg {
+            font-size: 1.2rem;
+        }
+
+        .login-box p.mb-0 {
+            text-align: center;
+        }
+    </style>
 </head>
 
 <body class="hold-transition login-page">
     <div class="login-box">
         <div class="login-logo">
-            <a href="#"><b>Inventory</b>System</a>
+            <a href=""><b>Inventory</b>System</a>
         </div>
 
         <div class="card">
@@ -53,6 +113,7 @@
                             <option value="editor_Sales">Sales Officer</option>
                             <option value="editor_Product">Product Officer</option>
                             <option value="editor_Warehouse">Warehouse Manager</option>
+                            <option value="customer">Customer</option>
                         </select>
                     </div>
 
@@ -78,6 +139,7 @@
                         <a href="signup.php" class="text-center">Don't have an account? Sign up</a>
                     </p>
                     
+                </form>
             </div>
         </div>
     </div>

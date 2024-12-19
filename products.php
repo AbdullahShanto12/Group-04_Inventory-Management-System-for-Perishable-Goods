@@ -41,6 +41,196 @@ $conn->close();
     <link rel="stylesheet" href="dist/css/adminlte.min.css">
     <!-- overlayScrollbars -->
     <link rel="stylesheet" href="plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+
+
+<style>
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f8f9fa;
+}
+
+
+.content-wrapper {
+        margin-left: 50px;
+        padding: 20px;
+        }
+
+
+        
+.search-container {
+    background: linear-gradient(to right, #6a11cb, #2575fc);
+    color: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    margin-bottom: 30px;
+}
+
+.search-container h3 {
+    font-size: 1.6rem;
+    margin-bottom: 15px;
+    font-weight: 500;
+}
+
+.search-container input {
+    width: 100%;
+    padding: 12px;
+    font-size: 1rem;
+    border: 2px solid #fff;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    background-color: rgba(255, 255, 255, 0.2);
+    color: #fff;
+}
+
+.search-container input:focus {
+    border-color: #2575fc;
+    outline: none;
+}
+
+.search-container button {
+    width: 100%;
+    padding: 12px;
+    font-size: 1rem;
+    background-color: #2575fc;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.search-container button:hover {
+    background-color: #6a11cb;
+}
+
+.category-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.category-container button {
+    width: 160px;
+    padding: 12px;
+    font-size: 1rem;
+    border-radius: 8px;
+    border: 2px solid #2575fc;
+    background-color: transparent;
+    color: #2575fc;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.category-container button:hover {
+    background-color: #2575fc;
+    color: #fff;
+}
+
+.category-container .btn-outline-primary:hover {
+    background-color: #6a11cb;
+    color: #fff;
+}
+
+.category-container .btn-outline-success:hover {
+    background-color: #28a745;
+    color: #fff;
+}
+
+.category-container .btn-outline-danger:hover {
+    background-color: #dc3545;
+    color: #fff;
+}
+
+.category-container .btn-outline-warning:hover {
+    background-color: #ffc107;
+    color: #fff;
+}
+
+.category-container .btn-outline-dark:hover {
+    background-color: #343a40;
+    color: #fff;
+}
+
+.category-container .btn-outline-secondary:hover {
+    background-color: #6c757d;
+    color: #fff;
+}
+
+#show-all-products-btn {
+    background-color: #6c757d;
+    color: #fff;
+    border: 2px solid #6c757d;
+    padding: 12px;
+    font-size: 1rem;
+    border-radius: 8px;
+    width: 100%;
+    cursor: pointer;
+}
+
+#show-all-products-btn:hover {
+    background-color: #495057;
+    border-color: #495057;
+}
+
+@media (max-width: 768px) {
+    .category-container {
+        flex-direction: column;
+    }
+
+    .category-container button {
+        width: 100%;
+    }
+}
+
+
+
+    /* Ensure the wrapper takes full height */
+    html, body {
+        height: 100%;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+    }
+
+    /* Main wrapper to flex and grow */
+    .wrapper {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+    }
+
+    /* Content wrapper should grow to fill available space */
+    .content-wrapper {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+    }
+
+    /* Footer styles to stay at the bottom */
+    footer {
+        background: #f8f9fa; /* Light background for the footer */
+        text-align: center;
+        padding: 10px 20px;
+        border-top: 1px solid #dee2e6;
+        flex-shrink: 0;
+    }
+
+
+
+</style>
+
+
+
+
+
+
+
+
+
+
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -82,6 +272,12 @@ $conn->close();
                         <a href="orders.php" class="nav-link">
                             <i class="nav-icon fas fa-shopping-cart"></i>
                             <p>Sales Orders</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="Customer_Order.php" class="nav-link ">
+                            <i class="nav-icon fas fa-shopping-cart"></i>
+                            <p>Customer Order</p>
                         </a>
                     </li>
                     <li class="nav-item">
@@ -136,7 +332,7 @@ $conn->close();
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Products</h1>
+                    <h1>Products Page</h1>
                 </div>
             </div>
         </div>
@@ -145,6 +341,36 @@ $conn->close();
     <!-- Main content -->
     <section class="content">
         <div class="container-fluid">
+
+
+
+
+
+                <div class="text-left mb-4">
+                    <h1>Product Directory</h1>
+                    <p>Search and explore product details</p>
+                </div>
+
+                <!-- Search Container -->
+                <div class="card search-container p-3 mb-3">
+                    <h3>Search Product</h3>
+                    <input type="text" id="product-id" class="form-control mb-2" placeholder="Enter Product ID">
+                    <button onclick="searchProduct()" class="btn btn-light">Search</button>
+                </div>
+
+                <!-- Filters -->
+                <h3 class="mb-3">Browse by Category</h3>
+                <div class="category-container d-flex justify-content-start mb-4">
+                    <button class="btn btn-outline-primary me-2" onclick="filterByCategory('Electronics')">Electronics</button>
+                    <button class="btn btn-outline-success me-2" onclick="filterByCategory('vegatable')">Vegatable</button>
+                    <button class="btn btn-outline-danger me-2" onclick="filterByCategory('fruits')">Fruits</button>
+                    <button class="btn btn-outline-warning me-2" onclick="filterByCategory('Accessories')">Accessories</button>
+                    <button class="btn btn-outline-dark me-2" onclick="filterByCategory('Office Supplies')">Office Supplies</button>
+                    <button class="btn btn-outline-secondary" id="show-all-products-btn">All Products</button>
+                </div>
+
+
+
             <div class="card">
                 <div class="card-header">
                     <h3 class="card-title">Product Inventory</h3>
@@ -374,6 +600,59 @@ $conn->close();
 
 
 <script>
+
+
+
+
+
+// Search Product by ID
+function searchProduct() {
+    var searchId = $('#product-id').val().trim();
+
+    if (searchId === '') {
+        alert('Please enter a valid Product ID.');
+        return;
+    }
+
+    // Iterate through the table rows and find the matching ID
+    $('#productTable tbody tr').each(function () {
+        var row = $(this);
+        var productId = row.find('td:first').text().trim();
+
+        if (productId === searchId) {
+            row.show();
+        } else {
+            row.hide();
+        }
+    });
+}
+
+// Filter by Category
+function filterByCategory(category) {
+    $('#productTable tbody tr').each(function () {
+        var row = $(this);
+        var productCategory = row.find('td:nth-child(3)').text().trim();
+
+        if (productCategory === category) {
+            row.show();
+        } else {
+            row.hide();
+        }
+    });
+}
+
+// Show All Products
+$('#show-all-products-btn').click(function () {
+    $('#productTable tbody tr').show();
+});
+
+
+
+
+
+
+
+
 
 
     // View Product Modal
