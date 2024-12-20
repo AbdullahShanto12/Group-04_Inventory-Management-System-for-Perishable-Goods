@@ -27,7 +27,7 @@ $conn->close();
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Products - Inventory Management System</title>
+    <title>My Products - Consumer Dashboard</title>
 
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -255,7 +255,7 @@ body {
         <!-- Brand Logo -->
         <a href="" class="brand-link">
             <img src="dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3">
-            <span class="brand-text font-weight-light">Inventory System</span>
+            <span class="brand-text font-weight-light">Consumer Dashboard</span>
         </a>
 
 

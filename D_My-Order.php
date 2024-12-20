@@ -42,7 +42,7 @@ $conn->close();
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>My Orders - Customer Dashboard</title>
+    <title>My Orders - Consumer Dashboard</title>
 
 
     <!-- Google Font: Source Sans Pro -->
@@ -102,7 +102,7 @@ $conn->close();
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
             <a href="#" class="brand-link">
                 <img src="dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3">
-                <span class="brand-text font-weight-light">Customer Dashboard</span>
+                <span class="brand-text font-weight-light">Consumer Dashboard</span>
             </a>
             <div class="sidebar">
                 <nav class="mt-2">
