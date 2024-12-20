@@ -23,6 +23,7 @@ $conn->close();
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -42,9 +43,6 @@ $conn->close();
     <link rel="stylesheet" href="plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
 
 
-
-
-    
 <style>
 
 body {
@@ -229,7 +227,12 @@ body {
 
 
 
+
+
+
+
 </head>
+
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
 
@@ -239,7 +242,9 @@ body {
             <li class="nav-item">
                 <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
             </li>
-
+            <li class="nav-item d-none d-sm-inline-block">
+                <a href="D_Customer_products.php" class="nav-link">Home</a>
+            </li>
  
         </ul>
     </nav>
@@ -248,37 +253,48 @@ body {
     <!-- Main Sidebar Container -->
     <aside class="main-sidebar sidebar-dark-primary elevation-4">
         <!-- Brand Logo -->
-        <a href="#" class="brand-link">
+        <a href="" class="brand-link">
             <img src="dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3">
             <span class="brand-text font-weight-light">Inventory System</span>
         </a>
+
 
         <!-- Sidebar -->
         <div class="sidebar">
             <nav class="mt-2">
                 <ul class="nav nav-pills nav-sidebar flex-column" role="menu" data-accordion="false">
-                   
-                    
-
-                    <li class="nav-item">
-                        <a href="U_Product_Officer.php" class="nav-link active">
-                            <i class="nav-icon fas fa-box"></i>
-                            <p>Product Officer</p>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="login.html" class="nav-link">
-                            <i class="nav-icon fas fa-sign-in-alt"></i>
-                            <p>Log Out</p>
-                        </a>
-                    </li>
-
-
+                <li class="nav-item">
+                            <a href="D_Customer_products.php" class="nav-link active">
+                                <i class="nav-icon fas fa-th"></i>
+                                <p>Products</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="D_Customer_cart.html" class="nav-link ">
+                                <i class="nav-icon fas fa-shopping-cart"></i>
+                                <p>My Cart</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="D_My-Order.php" class="nav-link">
+                                <i class="nav-icon fas fa-file-invoice"></i>
+                                <p>My Orders</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="login.html" class="nav-link">
+                                <i class="nav-icon fas fa-sign-in-alt"></i>
+                                <p>Log Out</p>
+                            </a>
+                        </li>
                 </ul>
             </nav>
         </div>
         <!-- /.sidebar -->
+
     </aside>
+
+
 
 
 
@@ -288,7 +304,7 @@ body {
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Products Officer</h1>
+                    <h1>Products Page</h1>
                 </div>
             </div>
         </div>
@@ -299,11 +315,10 @@ body {
         <div class="container-fluid">
 
 
-        
 
 
 
-        <div class="text-left mb-4">
+                <div class="text-left mb-4">
                     <h1>Product Directory</h1>
                     <p>Search and explore product details</p>
                 </div>
@@ -328,16 +343,11 @@ body {
 
 
 
-
-
-
-                <div class="card">
+            <div class="card">
                 <div class="card-header">
                     <h3 class="card-title">Product Inventory</h3>
                     <div class="card-tools">
-                        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#addProductModal">
-                            <i class="fas fa-plus"></i> Add Product
-                        </button>
+
                         <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
                             <i class="fas fa-minus"></i>
                         </button>
@@ -374,26 +384,22 @@ body {
                                             data-category="<?php echo $product['category']; ?>"
                                             data-stock="<?php echo $product['stock_quantity']; ?>"
                                             data-price="<?php echo $product['price']; ?>">View
-                                            </button>                                
-
-                                        <!-- Edit Button -->
-                                            <button class="btn btn-warning" 
-                                                data-toggle="modal" 
-                                                data-target="#editProductModal" 
-                                                data-id="<?php echo $product['product_id']; ?>"
-                                                data-name="<?php echo $product['product_name']; ?>"
-                                                data-category="<?php echo $product['category']; ?>"
-                                                data-stock="<?php echo $product['stock_quantity']; ?>"
-                                                data-price="<?php echo $product['price']; ?>">Edit
-                                            </button>
-
-                                         <!-- Delete Button -->                                      
-                                         <button class="btn btn-danger" 
-                                                data-toggle="modal" 
-                                                data-target="#deleteProductModal" 
-                                                data-id="<?php echo $product['product_id']; ?>">Delete
-                                            </button>
+                                            </button>   
                                             
+                                            
+
+                                                <!-- Add to Cart Button -->
+                                        <button class="btn btn-success"
+                                            onclick="addToCart({
+                                                id: '<?php echo $product['product_id']; ?>',
+                                                name: '<?php echo $product['product_name']; ?>',
+                                                category: '<?php echo $product['category']; ?>',
+                                                price: <?php echo $product['price']; ?>,
+                                                stock: <?php echo $product['stock_quantity']; ?>
+                                            })">Add to Cart</button>
+
+
+                                                
 
                                         </td>
 
@@ -419,104 +425,11 @@ body {
     <!-- Control Sidebar -->
 </div>
 
-<!-- Add Product Modal -->
-<div class="modal fade" id="addProductModal" tabindex="-1" role="dialog" aria-labelledby="addProductModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="addProductModalLabel">Add New Product</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form action="add-product.php" method="POST">
-                    <div class="form-group">
-                        <label for="productId">Product ID</label>
-                        <input type="text" class="form-control" name="product_id" id="productId" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="productName">Product Name</label>
-                        <input type="text" class="form-control" name="product_name" id="productName" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="category">Category</label>
-                        <input type="text" class="form-control" name="category" id="category" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="stockQuantity">Stock Quantity</label>
-                        <input type="number" class="form-control" name="stock_quantity" id="stockQuantity" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="price">Price</label>
-                        <input type="text" class="form-control" name="price" id="price" required>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Add Product</button>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- Delete Product Modal -->
-<div class="modal fade" id="deleteProductModal" tabindex="-1" aria-labelledby="deleteProductModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="deleteProductModalLabel">Confirm Delete</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <p>Are you sure you want to delete this product?</p>
-                <input type="hidden" id="productIdToDelete">
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                <button type="button" id="confirmDeleteButton" class="btn btn-danger">Delete</button>
-            </div>
-        </div>
-    </div>
-</div>
 
-<!-- Edit Product Modal -->
-<div class="modal fade" id="editProductModal" tabindex="-1" aria-labelledby="editProductModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="editProductModalLabel">Edit Product</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form id="editProductForm">
-                    <input type="hidden" id="editProductId" name="product_id">
-                    <div class="form-group">
-                        <label for="editProductName">Product Name</label>
-                        <input type="text" class="form-control" id="editProductName" name="product_name" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="editCategory">Category</label>
-                        <input type="text" class="form-control" id="editCategory" name="category" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="editStock">Stock Quantity</label>
-                        <input type="number" class="form-control" id="editStock" name="stock_quantity" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="editPrice">Price</label>
-                        <input type="number" step="0.01" class="form-control" id="editPrice" name="price" required>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                <button type="button" id="saveEditButton" class="btn btn-primary">Save Changes</button>
-            </div>
-        </div>
-    </div>
-</div>
+
+
+
+
 
 
 <!-- View Product Modal -->
@@ -632,82 +545,37 @@ $('#viewProductModal').on('show.bs.modal', function (event) {
 });
 
 
+// Add product to cart
+function addToCart(product) {
+    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+    const existingProduct = cart.find(item => item.id === product.id);
 
-    // Delete Product Modal
+    if (existingProduct) {
+        if (existingProduct.quantity < product.stock) {
+            existingProduct.quantity += 1;
+        } else {
+            alert(`Sorry, only ${product.stock} units of ${product.name} are available.`);
+            return;
+        }
+    } else {
+        if (product.stock > 0) {
+            cart.push({ ...product, quantity: 1 });
+        } else {
+            alert(`${product.name} is out of stock.`);
+            return;
+        }
+    }
 
-    // When the modal is about to be shown
-    $('#deleteProductModal').on('show.bs.modal', function (event) {
-        var button = $(event.relatedTarget); // Button that triggered the modal
-        var productId = button.data('id'); // Extract the product_id from data-* attribute
-        var modal = $(this);
+    localStorage.setItem('cart', JSON.stringify(cart));
+    alert(`${product.name} has been added to your cart!`);
+}
 
-        // Set the hidden input value with the product_id
-        modal.find('#productIdToDelete').val(productId);
-    });
 
-    // When the delete button is clicked in the modal
-    $('#confirmDeleteButton').click(function () {
-        var productId = $('#productIdToDelete').val(); // Get the product_id
 
-        // Send an AJAX request to delete the product
-        $.ajax({
-            type: "POST",
-            url: "delete-product.php", // PHP script to handle deletion
-            data: { product_id: productId },
-            success: function (response) {
-                // Close the modal
-                $('#deleteProductModal').modal('hide');
-                
-                // Reload the page or update the UI as needed
-                alert(response); // Display the response
-                location.reload(); // Reload the page to reflect changes
-            },
-            error: function () {
-                alert('Error deleting product.');
-            }
-        });
-    });
 
- // When the edit modal is about to be shown
- $('#editProductModal').on('show.bs.modal', function (event) {
-        var button = $(event.relatedTarget); // Button that triggered the modal
-        var productId = button.data('id'); // Extract product data from data-* attributes
-        var productName = button.data('name');
-        var category = button.data('category');
-        var stock = button.data('stock');
-        var price = button.data('price');
 
-        // Set the values in the modal fields
-        $('#editProductId').val(productId);
-        $('#editProductName').val(productName);
-        $('#editCategory').val(category);
-        $('#editStock').val(stock);
-        $('#editPrice').val(price);
-    });
 
-    // When the save button is clicked in the modal
-    $('#saveEditButton').click(function () {
-        // Serialize the form data
-        var formData = $('#editProductForm').serialize();
 
-        // Send an AJAX request to update the product
-        $.ajax({
-            type: "POST",
-            url: "update-product.php", // PHP script to handle the update
-            data: formData,
-            success: function (response) {
-                // Close the modal
-                $('#editProductModal').modal('hide');
-
-                // Reload the page or update the UI as needed
-                alert(response); // Display the response
-                location.reload(); // Reload the page to reflect changes
-            },
-            error: function () {
-                alert('Error updating product.');
-            }
-        });
-    });
 
 </script>
 

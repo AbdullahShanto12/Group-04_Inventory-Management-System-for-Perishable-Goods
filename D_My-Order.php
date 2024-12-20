@@ -93,14 +93,14 @@ $conn->close();
                     <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
                 </li>
                 <li class="nav-item d-none d-sm-inline-block">
-                    <a href="C_My-Product.html" class="nav-link">Home</a>
+                    <a href="D_Customer_products.php" class="nav-link">Home</a>
                 </li>
             </ul>
         </nav>
         
         <!-- Main Sidebar Container -->
         <aside class="main-sidebar sidebar-dark-primary elevation-4">
-            <a href="" class="brand-link">
+            <a href="#" class="brand-link">
                 <img src="dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3">
                 <span class="brand-text font-weight-light">Customer Dashboard</span>
             </a>
@@ -108,19 +108,19 @@ $conn->close();
                 <nav class="mt-2">
                     <ul class="nav nav-pills nav-sidebar flex-column" role="menu" data-accordion="false">
                         <li class="nav-item">
-                            <a href="C_My-Product.html" class="nav-link">
+                            <a href="D_Customer_products.php" class="nav-link">
                                 <i class="nav-icon fas fa-th"></i>
                                 <p>Products</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="C_My-Cart.html" class="nav-link ">
+                            <a href="D_Customer_cart.html" class="nav-link ">
                                 <i class="nav-icon fas fa-shopping-cart"></i>
                                 <p>My Cart</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="C_My-Order.php" class="nav-link active">
+                            <a href="D_My-Order.php" class="nav-link active">
                                 <i class="nav-icon fas fa-file-invoice"></i>
                                 <p>My Orders</p>
                             </a>

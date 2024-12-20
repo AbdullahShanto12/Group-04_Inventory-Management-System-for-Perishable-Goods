@@ -311,6 +311,12 @@ body {
                         </a>
                     </li>
                     <li class="nav-item">
+                        <a href="users.php" class="nav-link  ">
+                            <i class="nav-icon fas fa-users"></i>
+                            <p>Users </p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a href="login.html" class="nav-link">
                             <i class="nav-icon fas fa-sign-in-alt"></i>
                             <p>Log Out</p>

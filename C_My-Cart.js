@@ -85,6 +85,13 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+
+
+
+
+
+
+
     function generateOrderId() {
         return Math.floor(Math.random() * 1e8); // Generate a random integer up to 8 digits
     }

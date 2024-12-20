@@ -41,6 +41,145 @@ $conn->close();
     <link rel="stylesheet" href="dist/css/adminlte.min.css">
     <!-- overlayScrollbars -->
     <link rel="stylesheet" href="plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+
+
+
+    <style>
+
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f8f9fa;
+}
+
+    .content-wrapper {
+        margin-left: 50px;
+        padding: 20px;
+        }
+
+/* Search Container */
+.search-container {
+    background: linear-gradient(to right, #f27121, #e94057);
+    color: #fff;
+    border-radius: 5px;
+    padding: 20px;
+}
+
+.search-container input {
+    margin-bottom: 10px;
+}
+
+.search-container button {
+    background-color: #fff;
+    color: #e94057;
+    font-weight: bold;
+}
+
+/* Category Buttons */
+.category-container button {
+    width: 150px;
+    margin-right: 10px;
+    font-size: 14px;
+}
+
+/* Order Table */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #ffffff;
+    border-radius: 5px;
+    overflow: hidden;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+table thead th {
+    background-color: #6a11cb;
+    color: #ffffff;
+    padding: 10px;
+    text-align: left;
+}
+
+table tbody tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+table tbody tr:hover {
+    background-color: #eaeaea;
+}
+
+table tbody td {
+    padding: 10px;
+    text-align: left;
+}
+
+/* Buttons for Actions */
+.actions button {
+    margin-right: 5px;
+    font-size: 12px;
+    padding: 5px 10px;
+}
+
+.actions .btn-info {
+    background-color: #17a2b8;
+    color: #ffffff;
+}
+
+.actions .btn-warning {
+    background-color: #ffc107;
+    color: #ffffff;
+}
+
+.actions .btn-danger {
+    background-color: #dc3545;
+    color: #ffffff;
+}
+
+
+
+
+    /* Ensure the wrapper takes full height */
+    html, body {
+        height: 100%;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+    }
+
+    /* Main wrapper to flex and grow */
+    .wrapper {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+    }
+
+    /* Content wrapper should grow to fill available space */
+    .content-wrapper {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+    }
+
+    /* Footer styles to stay at the bottom */
+    footer {
+        background: #f8f9fa; /* Light background for the footer */
+        text-align: center;
+        padding: 10px 20px;
+        border-top: 1px solid #dee2e6;
+        flex-shrink: 0;
+    }
+
+
+
+
+
+    </style>
+
+
+
+
+
+
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -107,6 +246,42 @@ $conn->close();
             <!-- Main content -->
             <section class="content">
                 <div class="container-fluid">
+
+
+                
+
+                <div class="text-left mb-4">
+                    <h1>Order Management</h1>
+                    <p>Search and manage sales orders</p>
+                </div>
+
+                <!-- Search Container -->
+                <div class="card search-container p-3 mb-3">
+                    <h3>Search Sales Order</h3>
+                    <input type="text" id="order-id" class="form-control mb-2" placeholder="Enter Order ID">
+                    <button onclick="searchOrder()" class="btn btn-light">Search</button>
+                </div>
+
+                <!-- Filters -->
+                <h3 class="mb-3">Filter by Status</h3>
+                <div class="category-container d-flex justify-content-start mb-4">
+                    <button class="btn btn-outline-primary me-2" onclick="filterByStatus('Pending')">Pending</button>
+                    <button class="btn btn-outline-success me-2" onclick="filterByStatus('Completed')">Completed</button>
+                    <button class="btn btn-outline-warning me-2" onclick="filterByStatus('Processing')">Processing</button>
+                    <button class="btn btn-outline-danger me-2" onclick="filterByStatus('Cancelled')">Cancelled</button>
+                    <button class="btn btn-outline-secondary" id="show-all-orders-btn">All Orders</button>
+                </div>
+
+
+
+
+
+
+
+
+
+
+
                     <div class="card">
                         <div class="card-header">
                             <h3 class="card-title">Recent Sales Orders</h3>
@@ -368,6 +543,61 @@ $conn->close();
 
 
 <script>
+
+
+
+
+
+// Search Order by ID
+function searchOrder() {
+    var searchId = $('#order-id').val().trim();
+
+    if (searchId === '') {
+        alert('Please enter a valid Order ID.');
+        return;
+    }
+
+    // Iterate through the table rows and find the matching ID
+    $('#salesOrdersTable tbody tr').each(function () {
+        var row = $(this);
+        var orderId = row.find('td:first').text().trim();
+
+        if (orderId === searchId) {
+            row.show();
+        } else {
+            row.hide();
+        }
+    });
+}
+
+// Filter by Status
+function filterByStatus(status) {
+    $('#salesOrdersTable tbody tr').each(function () {
+        var row = $(this);
+        var orderStatus = row.find('td:nth-child(4)').text().trim();
+
+        if (orderStatus === status) {
+            row.show();
+        } else {
+            row.hide();
+        }
+    });
+}
+
+// Show All Orders
+$('#show-all-orders-btn').click(function () {
+    $('#salesOrdersTable tbody tr').show();
+});
+
+
+
+
+
+
+
+
+
+
     // View Order Modal
     $('#viewOrderModal').on('show.bs.modal', function (event) {
         var button = $(event.relatedTarget); // Button that triggered the modal

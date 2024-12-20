@@ -41,6 +41,180 @@ $conn->close();
     <link rel="stylesheet" href="dist/css/adminlte.min.css">
     <!-- overlayScrollbars -->
     <link rel="stylesheet" href="plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+
+
+
+
+<style>
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f8f9fa;
+}
+
+.content-wrapper {
+    margin-left: 50px;
+    padding: 20px;
+}
+
+/* Search Container Styling with Royal Blue Theme */
+.search-container {
+    background: linear-gradient(to right, #4169e1, #1e90ff); /* Royal blue gradient */
+    color: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    margin-bottom: 30px;
+}
+
+.search-container h3 {
+    font-size: 1.6rem;
+    margin-bottom: 15px;
+    font-weight: 500;
+}
+
+.search-container input {
+    width: 100%;
+    padding: 12px;
+    font-size: 1rem;
+    border: 2px solid #fff;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    background-color: rgba(255, 255, 255, 0.2);
+    color: #fff;
+}
+
+.search-container input:focus {
+    border-color: #1e90ff;
+    outline: none;
+}
+
+.search-container button {
+    width: 100%;
+    padding: 12px;
+    font-size: 1rem;
+    background-color: #1e90ff;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.search-container button:hover {
+    background-color: #4169e1;
+}
+
+/* Alert Type Filter Buttons with Royal Blue Theme */
+.alert-type-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.alert-type-container button {
+    width: 160px;
+    padding: 12px;
+    font-size: 1rem;
+    border-radius: 8px;
+    border: 2px solid #1e90ff;
+    background-color: transparent;
+    color: #1e90ff;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.alert-type-container button:hover {
+    background-color: #1e90ff;
+    color: #fff;
+}
+
+.alert-type-container .btn-outline-primary:hover {
+    background-color: #6a11cb;
+    color: #fff;
+}
+
+.alert-type-container .btn-outline-danger:hover {
+    background-color: #dc3545;
+    color: #fff;
+}
+
+.alert-type-container .btn-outline-warning:hover {
+    background-color: #ffc107;
+    color: #fff;
+}
+
+.alert-type-container .btn-outline-secondary:hover {
+    background-color: #6c757d;
+    color: #fff;
+}
+
+#show-all-alerts-btn {
+    background-color: #6c757d;
+    color: #fff;
+    border: 2px solid #6c757d;
+    padding: 12px;
+    font-size: 1rem;
+    border-radius: 8px;
+    width: 100%;
+    cursor: pointer;
+}
+
+#show-all-alerts-btn:hover {
+    background-color: #495057;
+    border-color: #495057;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .alert-type-container {
+        flex-direction: column;
+    }
+
+    .alert-type-container button {
+        width: 100%;
+    }
+}
+
+/* Full Height Wrapper */
+html, body {
+    height: 100%;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.content-wrapper {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Footer Styling */
+footer {
+    background: #f8f9fa;
+    text-align: center;
+    padding: 10px 20px;
+    border-top: 1px solid #dee2e6;
+    flex-shrink: 0;
+}
+
+
+
+</style>
+
+
+
+
+
+
+
 </head>
 
 
@@ -123,6 +297,12 @@ $conn->close();
                         </a>
                     </li>
                     <li class="nav-item">
+                        <a href="users.php" class="nav-link  ">
+                            <i class="nav-icon fas fa-users"></i>
+                            <p>Users </p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a href="login.html" class="nav-link">
                             <i class="nav-icon fas fa-sign-in-alt"></i>
                             <p>Log Out</p>
@@ -154,9 +334,38 @@ $conn->close();
             </div>
         </section>
     
-<!-- Main content -->
-<section class="content">
-    <div class="container-fluid">
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+
+
+
+
+                        <div class="text-left mb-4">
+                        <h1>Alerts Directory</h1>
+                        <p>Search and explore alert details</p>
+                    </div>
+
+                    <!-- Search Container -->
+                    <div class="card search-container p-3 mb-3">
+                        <h3>Search Alert</h3>
+                        <input type="text" id="alert-id" class="form-control mb-2" placeholder="Enter Alert ID">
+                        <button onclick="searchAlert()" class="btn btn-light">Search</button>
+                    </div>
+
+                    <!-- Filters -->
+                    <h3 class="mb-3">Browse by Alert Type</h3>
+                    <div class="alert-type-container d-flex justify-content-start mb-4">
+                        <button class="btn btn-outline-primary me-2" onclick="filterByAlertType('System')">System</button>
+                        <button class="btn btn-outline-danger me-2" onclick="filterByAlertType('Order')">Order</button>
+                        <button class="btn btn-outline-warning me-2" onclick="filterByAlertType('Inventory')">Inventory</button>
+                        <button class="btn btn-outline-secondary" id="show-all-alerts-btn">All Alerts</button>
+                    </div>
+
+
+
+
+
         <!-- Alerts Table Card -->
         <div class="card">
             <div class="card-header">
@@ -171,8 +380,8 @@ $conn->close();
                 </div>
             </div>
             <div class="card-body p-0">
-                <table class="table table-striped projects">
-                    <thead>
+            <table class="table table-striped projects" id="alertTable">
+            <thead>
                         <tr>
                             <th style="width: 10%">Alert ID</th>
                             <th style="width: 15%">Alert Type</th>
@@ -400,6 +609,55 @@ $conn->close();
 
 
 <script>
+
+
+// Search Alert by ID
+function searchAlert() {
+    var searchId = $('#alert-id').val().trim();
+
+    if (searchId === '') {
+        alert('Please enter a valid Alert ID.');
+        return;
+    }
+
+    // Iterate through the table rows and find the matching ID
+    $('#alertTable tbody tr').each(function () {
+        var row = $(this);
+        var alertId = row.find('td:first').text().trim();
+
+        if (alertId === searchId) {
+            row.show();
+        } else {
+            row.hide();
+        }
+    });
+}
+
+// Filter by Alert Type
+function filterByAlertType(type) {
+    $('#alertTable tbody tr').each(function () {
+        var row = $(this);
+        var alertType = row.find('td:nth-child(2)').text().trim();
+
+        if (alertType === type) {
+            row.show();
+        } else {
+            row.hide();
+        }
+    });
+}
+
+// Show All Alerts
+$('#show-all-alerts-btn').click(function () {
+    $('#alertTable tbody tr').show();
+});
+
+
+
+
+
+
+
 
 
 

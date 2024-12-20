@@ -15,21 +15,36 @@ $role = $_SESSION['role'] ?? null;
 
 
 
+
 // Initialize variables for error-free rendering
-$newOrdersCount = ['count' => 0];
-$userRegistrationsCount = ['count' => 0];
+$ordersCount = ['count' => 0];
+$usersCount = ['count' => 0];
 $employeesCount = ['count' => 0];
-$warehouseCount = ['count' => 0];
-$lastOrder = null;
-
-
-
+$warehousesCount = ['count' => 0];
 
 // Fetch dashboard data
-$newOrdersCount = $conn->query("SELECT COUNT(*) AS count FROM orders ")->fetch_assoc();
-$userRegistrationsCount = $conn->query("SELECT COUNT(*) AS count FROM users")->fetch_assoc();
+$ordersCount = $conn->query("SELECT COUNT(*) AS count FROM orders")->fetch_assoc();
+$usersCount = $conn->query("SELECT COUNT(*) AS count FROM users")->fetch_assoc();
 $employeesCount = $conn->query("SELECT COUNT(*) AS count FROM employees")->fetch_assoc();
-$warehouseCount = $conn->query("SELECT COUNT(*) AS count FROM warehouses")->fetch_assoc();
+$warehousesCount = $conn->query("SELECT COUNT(*) AS count FROM warehouses")->fetch_assoc();
+
+
+
+
+// Initialize variables for error-free rendering
+$alertsCount = ['count' => 0];
+$orderItemsCount = ['count' => 0];
+$productsCount = ['count' => 0];
+$storageCount = ['count' => 0];
+
+// Fetch dashboard data
+$alertsCount = $conn->query("SELECT COUNT(*) AS count FROM alerts")->fetch_assoc();
+$orderItemsCount = $conn->query("SELECT COUNT(*) AS count FROM order_items")->fetch_assoc();
+$productsCount = $conn->query("SELECT COUNT(*) AS count FROM products")->fetch_assoc();
+$storageCount = $conn->query("SELECT COUNT(*) AS count FROM storage")->fetch_assoc();
+
+
+
 
 
 
@@ -82,7 +97,82 @@ $lastProduct = $lastProductQuery ? $lastProductQuery->fetch_assoc() : null;
 
 
 
+// Fetch grouped order_items from the database
+$query = "
+    SELECT 
+        order_id, 
+        GROUP_CONCAT(product_name SEPARATOR ', ') AS product_names,
+        SUM(price * quantity) AS subtotal,
+        MAX(total) AS total,
+        payment_method,
+        MAX(order_date) AS order_date
+    FROM order_items
+    GROUP BY order_id
+    ORDER BY order_date DESC
+    LIMIT 1
+";
+$lastGroupedOrderQuery = $conn->query($query);
+$lastGroupedOrder = $lastGroupedOrderQuery ? $lastGroupedOrderQuery->fetch_assoc() : null;
 
+
+// Fetch the warehouse with the highest capacity
+$query = "
+    SELECT 
+        warehouse_id, 
+        warehouse_name, 
+        location, 
+        capacity,
+        stock_level 
+    FROM warehouses 
+    ORDER BY capacity DESC 
+    LIMIT 1
+";
+$result = $conn->query($query);
+
+// Fetch the warehouse with the highest capacity
+$highestCapacityWarehouse = $result->num_rows > 0 ? $result->fetch_assoc() : null;
+
+
+
+
+
+// Fetch the employee with the highest years of service
+$topEmployeeQuery = $conn->query("
+    SELECT 
+        employee_id, 
+        name, 
+        department, 
+        job_title, 
+        location, 
+        years_of_service 
+    FROM employees 
+    ORDER BY years_of_service DESC 
+    LIMIT 1
+");
+$topEmployee = $topEmployeeQuery ? $topEmployeeQuery->fetch_assoc() : null;
+
+
+
+
+
+// Fetch the order with the highest total paid
+$query = "
+    SELECT 
+        order_id, 
+        GROUP_CONCAT(product_name SEPARATOR ', ') AS product_names,
+        SUM(price * quantity) AS subtotal,
+        MAX(total) AS total,
+        payment_method,
+        MAX(order_date) AS order_date
+    FROM order_items
+    GROUP BY order_id
+    ORDER BY total DESC
+    LIMIT 1
+";
+$result = $conn->query($query);
+
+// Fetch the highest total order
+$highestOrder = $result->num_rows > 0 ? $result->fetch_assoc() : null;
 
 
 
@@ -246,6 +336,12 @@ $monthlySalesTotal = $conn->query("
                             </a>
                         </li>
                         <li class="nav-item">
+                        <a href="users.php" class="nav-link  ">
+                            <i class="nav-icon fas fa-users"></i>
+                            <p>Users </p>
+                        </a>
+                    </li>
+                        <li class="nav-item">
                             <a href="login.html" class="nav-link">
                                 <i class="nav-icon fas fa-sign-in-alt"></i>
                                 <p>Log Out</p>
@@ -272,42 +368,134 @@ $monthlySalesTotal = $conn->query("
             <!-- Main content -->
             <section class="content">
                 <div class="container-fluid">
-                    <!-- Dashboard Section -->
-                <div class="row mb-4">
-                    <div class="col-md-3">
-                        <div class="card text-white bg-primary mb-3">
-                            <div class="card-body">
-                                <h5 class="card-title">Total Orders</h5>
-                                <p class="card-text" id="newOrdersCount"><?php echo $newOrdersCount['count']; ?></p>
+
+
+
+
+                     <!-- Dashboard Section -->
+                    <div class="row">
+
+                        <!-- Orders Count -->
+                        <div class="col-lg-3 col-6">
+                            <div class="small-box bg-primary">
+                                <div class="inner">
+                                    <h3 style="font-weight: bold; font-size: 2rem;"><?= htmlspecialchars($ordersCount['count']); ?></h3>
+                                    <p style="font-weight: bold; font-size: 1.2rem;">Orders</p>
+                                </div>
+                                <div class="icon">
+                                    <i class="fas fa-shopping-bag"></i>
+                                </div>
+                                <a href="orders.php" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="card text-white bg-success mb-3">
-                            <div class="card-body">
-                                <h5 class="card-title">Total Warehouse </h5>
-                                    <p class="card-text" id="warehouseCount"><?php echo $warehouseCount['count']; ?></p>
+
+                        <!-- Users Count -->
+                        <div class="col-lg-3 col-6">
+                            <div class="small-box bg-indigo">
+                                <div class="inner">
+                                    <h3 style="font-weight: bold; font-size: 2rem;"><?= htmlspecialchars($usersCount['count']); ?></h3>
+                                    <p style="font-weight: bold; font-size: 1.2rem;">Users</p>
+                                </div>
+                                <div class="icon">
+                                    <i class="fas fa-users"></i>
+                                </div>
+                                <a href="users.php" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                            </div>
+                        </div>
+
+                        <!-- Employees Count -->
+                        <div class="col-lg-3 col-6">
+                            <div class="small-box bg-dark">
+                                <div class="inner">
+                                    <h3 style="font-weight: bold; font-size: 2rem;"><?= htmlspecialchars($employeesCount['count']); ?></h3>
+                                    <p style="font-weight: bold; font-size: 1.2rem;">Employees</p>
+                                </div>
+                                <div class="icon">
+                                    <i class="fas fa-user-tie"></i>
+                                </div>
+                                <a href="employees.php" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                            </div>
+                        </div>
+
+                        <!-- Warehouses Count -->
+                        <div class="col-lg-3 col-6">
+                            <div class="small-box bg-orange">
+                                <div class="inner">
+                                    <h3 style="font-weight: bold; font-size: 2rem;"><?= htmlspecialchars($warehousesCount['count']); ?></h3>
+                                    <p style="font-weight: bold; font-size: 1.2rem;">Warehouses</p>
+                                </div>
+                                <div class="icon">
+                                    <i class="fas fa-warehouse"></i>
+                                </div>
+                                <a href="warehouses.php" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                             </div>
                         </div>
                     </div>
 
-                    <div class="col-md-3">
-                        <div class="card text-white bg-warning mb-3">
-                            <div class="card-body">
-                                <h5 class="card-title">Total User </h5>
-                                <p class="card-text" id="userRegistrationsCount"><?php echo $userRegistrationsCount['count']; ?></p>
+
+
+
+
+                                
+                    <div class="row">
+                        <!-- Alerts Count -->
+                        <div class="col-lg-3 col-6">
+                            <div class="small-box bg-info">
+                                <div class="inner">
+                                    <h3 style="font-weight: bold; font-size: 2rem;"><?= htmlspecialchars($alertsCount['count']); ?></h3>
+                                    <p style="font-weight: bold; font-size: 1.2rem;">Alerts</p>
+                                </div>
+                                <div class="icon">
+                                    <i class="fas fa-bell"></i>
+                                </div>
+                                <a href="alerts.php" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                            </div>
+                        </div>
+
+                        <!-- Order Items Count -->
+                        <div class="col-lg-3 col-6">
+                            <div class="small-box bg-success">
+                                <div class="inner">
+                                    <h3 style="font-weight: bold; font-size: 2rem;"><?= htmlspecialchars($orderItemsCount['count']); ?></h3>
+                                    <p style="font-weight: bold; font-size: 1.2rem;">Order Items</p>
+                                </div>
+                                <div class="icon">
+                                    <i class="fas fa-shopping-cart"></i>
+                                </div>
+                                <a href="Customer_Order.php" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                            </div>
+                        </div>
+
+                        <!-- Products Count -->
+                        <div class="col-lg-3 col-6">
+                            <div class="small-box bg-warning">
+                                <div class="inner">
+                                    <h3 style="font-weight: bold; font-size: 2rem;"><?= htmlspecialchars($productsCount['count']); ?></h3>
+                                    <p style="font-weight: bold; font-size: 1.2rem;">Products</p>
+                                </div>
+                                <div class="icon">
+                                    <i class="fas fa-box"></i>
+                                </div>
+                                <a href="products.php" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                            </div>
+                        </div>
+
+                        <!-- Storage Count -->
+                        <div class="col-lg-3 col-6">
+                            <div class="small-box bg-danger">
+                                <div class="inner">
+                                    <h3 style="font-weight: bold; font-size: 2rem;"><?= htmlspecialchars($storageCount['count']); ?></h3>
+                                    <p style="font-weight: bold; font-size: 1.2rem;">Storage</p>
+                                </div>
+                                <div class="icon">
+                                    <i class="fas fa-warehouse"></i>
+                                </div>
+                                <a href="storage.php" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-3">
-                        <div class="card text-white bg-danger mb-3">
-                            <div class="card-body">
-                                <h5 class="card-title">Total Employees </h5>
-                                <p class="card-text" id="employeesCount"><?php echo $employeesCount['count']; ?></p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+
+
 
 
 
@@ -336,7 +524,7 @@ $monthlySalesTotal = $conn->query("
 <!-- Enhanced Last Order Section -->
 <div class="col-md-6">
     <div class="card">
-        <h3>Last Order</h3>
+        <h3>Latest Order</h3>
         <?php if ($lastOrder): ?>
             <p><strong>Order ID:</strong> <?= htmlspecialchars($lastOrder['order_id']) ?></p>
             <p><strong>Customer Name:</strong> <?= htmlspecialchars($lastOrder['customer_name']) ?></p>
@@ -367,7 +555,7 @@ $monthlySalesTotal = $conn->query("
     <!-- Enhanced Most Recent Product Section -->
     <div class="col-md-6">
         <div class="card">
-            <h3>Last Product</h3>
+            <h3>Latest Product</h3>
             <?php if ($lastProduct): ?>
                 <p><strong>Product ID:</strong> <?= $lastProduct['product_id'] ?></p>
                 <p><strong>Name:</strong> <?= $lastProduct['product_name'] ?></p>
@@ -387,7 +575,7 @@ $monthlySalesTotal = $conn->query("
     <!-- Enhanced Last Alert Section -->
     <div class="col-md-6">
         <div class="card">
-            <h3>Last Alert</h3>
+            <h3>Latest Alert</h3>
             <?php if ($lastAlert): ?>
                 <p><strong>Alert ID:</strong> <?= $lastAlert['alert_id'] ?></p>
                 <p><strong>Type:</strong> <?= $lastAlert['alert_type'] ?></p>
@@ -416,7 +604,7 @@ $monthlySalesTotal = $conn->query("
     <!-- Enhanced Most Recent Storage Section -->
     <div class="col-md-6">
         <div class="card">
-            <h3>Last Storage</h3>
+            <h3>Latest Storage</h3>
             <?php if ($lastStorage): ?>
                 <p><strong>Storage ID:</strong> <?= $lastStorage['storage_id'] ?></p>
                 <p><strong>Name:</strong> <?= $lastStorage['storage_name'] ?></p>
@@ -429,6 +617,111 @@ $monthlySalesTotal = $conn->query("
         </div>
     </div>
 </div>
+
+
+
+<!-- Another Row for the Customer Order and  Last Employee  Sections -->
+<div class="row">
+
+<!-- Enhanced Customer Order Items Section -->
+<div class="col-md-6">
+    <div class="card">
+        <h3>Latest Customer Order</h3>
+        <?php if ($lastGroupedOrder): ?>
+            <p><strong>Order ID:</strong> <?= htmlspecialchars($lastGroupedOrder['order_id']) ?></p>
+            <p><strong>Products:</strong> <?= htmlspecialchars($lastGroupedOrder['product_names']) ?></p>
+            <p><strong>Subtotal:</strong> $<?= htmlspecialchars(number_format($lastGroupedOrder['subtotal'], 2)) ?></p>
+            <p><strong>Total:</strong> $<?= htmlspecialchars(number_format($lastGroupedOrder['total'], 2)) ?></p>
+            <p><strong>Payment Method:</strong> <?= htmlspecialchars($lastGroupedOrder['payment_method']) ?></p>
+            <p><strong>Order Date:</strong> <?= htmlspecialchars(date('F j, Y', strtotime($lastGroupedOrder['order_date']))) ?></p>
+            <p><strong>Order Summary:</strong> 
+                <?= $lastGroupedOrder['payment_method'] === 'Credit Card' 
+                    ? 'This order was paid via Credit Card.' 
+                    : 'Payment method details are provided.'; ?>
+            </p>
+        <?php else: ?>
+            <p>No grouped order items found.</p>
+        <?php endif; ?>
+    </div>
+</div>
+
+<div class="col-md-6">
+    <div class="card">
+            <h3>Warehouse with the Highest Capacity</h3>
+        <div class="card-body">
+            <?php if ($highestCapacityWarehouse): ?>
+                <p><strong>Warehouse ID:</strong> <?= htmlspecialchars($highestCapacityWarehouse['warehouse_id']); ?></p>
+                <p><strong>Name:</strong> <?= htmlspecialchars($highestCapacityWarehouse['warehouse_name']); ?></p>
+                <p><strong>Location:</strong> <?= htmlspecialchars($highestCapacityWarehouse['location']); ?></p>
+                <p><strong>Capacity:</strong> <?= number_format($highestCapacityWarehouse['capacity']); ?> units</p>
+                <p><strong>Stock Level:</strong> <?= number_format($highestCapacityWarehouse['stock_level']); ?> units</p>
+                <p>
+                    <strong>Utilization Rate:</strong> 
+                    <?= round(($highestCapacityWarehouse['stock_level'] / $highestCapacityWarehouse['capacity']) * 100, 2); ?>%
+                </p>
+            <?php else: ?>
+                <p>No warehouse data found.</p>
+            <?php endif; ?>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+</div>
+
+<!-- Another Row for the Highest Years of Service Highest Total Paid  Sections -->
+<div class="row">
+
+<!-- Employee with Highest Years of Service Section -->
+<div class="col-md-6">
+    <div class="card">
+        <h3>Employee with the Highest Years of Service</h3>
+        <?php if ($topEmployee): ?>
+            <p><strong>Employee ID:</strong> <?= htmlspecialchars($topEmployee['employee_id']) ?></p>
+            <p><strong>Name:</strong> <?= htmlspecialchars($topEmployee['name']) ?></p>
+            <p><strong>Department:</strong> <?= htmlspecialchars($topEmployee['department']) ?></p>
+            <p><strong>Job Title:</strong> <?= htmlspecialchars($topEmployee['job_title']) ?></p>
+            <p><strong>Location:</strong> <?= htmlspecialchars($topEmployee['location']) ?></p>
+            <p><strong>Years of Service:</strong> <?= htmlspecialchars($topEmployee['years_of_service']) ?> years</p>
+            <p><strong>Employee Summary:</strong> 
+                <?= $topEmployee['years_of_service'] > 10 
+                    ? 'This employee has over 10 years of dedicated service and is a cornerstone of the team.' 
+                    : 'This employee has contributed significantly to the company.'; ?>
+            </p>
+        <?php else: ?>
+            <p>No employee data found.</p>
+        <?php endif; ?>
+    </div>
+</div>
+
+
+
+
+<div class="col-md-6">
+    <div class="card">
+        <h3>Order with the Highest Total Paid</h3>
+        <?php if ($highestOrder): ?>
+            <p><strong>Order ID:</strong> <?= htmlspecialchars($highestOrder['order_id']); ?></p>
+            <p><strong>Products:</strong> <?= htmlspecialchars($highestOrder['product_names']); ?></p>
+            <p><strong>Subtotal:</strong> $<?= number_format($highestOrder['subtotal'], 2); ?></p>
+            <p><strong>Total Paid:</strong> $<?= number_format($highestOrder['total'], 2); ?></p>
+            <p><strong>Payment Method:</strong> <?= htmlspecialchars($highestOrder['payment_method']); ?></p>
+            <p><strong>Order Date:</strong> <?= htmlspecialchars($highestOrder['order_date']); ?></p>
+        <?php else: ?>
+            <p>No order data found.</p>
+        <?php endif; ?>
+    </div>
+</div>
+
+
+</div>
+
+
+
 
 
 

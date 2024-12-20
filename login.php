@@ -44,18 +44,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 case 'admin':
                     header("Location: dashboard.php");
                     break;
-                case 'editor_Sales':
+                case 'Sales Officer':
                     header("Location: U_Sales_Officer.php");
                     break;
-                case 'editor_Product':
+                case 'Product Officer':
                     header("Location: U_Product_Officer.php");
                     break;
-                case 'editor_Warehouse':
+                case 'Warehouse Manager':
                     header("Location: U_Warehouse_Manager.php");
                     break;
-                case 'customer':
+                case 'Customer':
                     header("Location: C_My-Product.html");
                     break;
+                case 'Consumer':
+                    header("Location: D_Customer_products.php");
+                    break;    
                 default:
                     echo "Role not recognized.";
                     break;
@@ -69,6 +72,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // User not found
         echo "No user found with that email and role.";
     }
+
 
     // Close the prepared statement and database connection
     $stmt->close();

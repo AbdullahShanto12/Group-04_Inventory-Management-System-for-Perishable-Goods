@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 20, 2024 at 12:00 AM
+-- Generation Time: Dec 20, 2024 at 06:36 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -151,7 +151,7 @@ INSERT INTO `orders` (`order_id`, `customer_name`, `order_date`, `status`, `tota
 (12, 'Davis', '2024-12-12', 'Processing', 300.00),
 (13, 'shanto', '2024-12-11', 'Completed', 300.00),
 (14, 'alam', '2025-01-09', 'Completed', 200.00),
-(15, 'Esha', '2024-12-27', 'Completed', 300.00),
+(15, 'Esha', '2025-01-10', 'Completed', 300.00),
 (16, 'abdullah', '2024-11-19', 'Completed', 300.00);
 
 -- --------------------------------------------------------
@@ -191,7 +191,20 @@ INSERT INTO `order_items` (`id`, `order_id`, `product_name`, `price`, `quantity`
 (25, 66713926, 'Smartphone', 500.00, 1, 500.00, 'cashOnDelivery', 550.00, '2024-12-19 21:37:01'),
 (26, 96956982, 'Laptop', 700.00, 3, 2100.00, 'cashOnDelivery', 4042.50, '2024-12-20 02:45:45'),
 (27, 96956982, 'Smartphone', 500.00, 3, 1500.00, 'cashOnDelivery', 4042.50, '2024-12-20 02:45:45'),
-(28, 96956982, 'T-Shirt', 15.00, 5, 75.00, 'cashOnDelivery', 4042.50, '2024-12-20 02:45:45');
+(28, 96956982, 'T-Shirt', 15.00, 5, 75.00, 'cashOnDelivery', 4042.50, '2024-12-20 02:45:45'),
+(29, 29393083, 'Laptop', 700.00, 2, 1400.00, 'creditCard', 3239.50, '2024-12-20 05:10:20'),
+(30, 29393083, 'T-Shirt', 15.00, 3, 45.00, 'creditCard', 3239.50, '2024-12-20 05:10:20'),
+(31, 29393083, 'Smartphone', 500.00, 3, 1500.00, 'creditCard', 3239.50, '2024-12-20 05:10:20'),
+(32, 8154383, 'Keyboard', 29.99, 5, 149.95, 'cashOnDelivery', 9030.64, '2024-12-20 20:27:00'),
+(33, 8154383, 'Smartwatch', 249.99, 7, 1749.93, 'cashOnDelivery', 9030.64, '2024-12-20 20:27:00'),
+(34, 8154383, 'Organic Eggs', 2.00, 5, 10.00, 'cashOnDelivery', 9030.64, '2024-12-20 20:27:00'),
+(35, 8154383, 'Smartphone', 799.99, 7, 5599.93, 'cashOnDelivery', 9030.64, '2024-12-20 20:27:00'),
+(36, 8154383, 'Headphones', 49.99, 14, 699.86, 'cashOnDelivery', 9030.64, '2024-12-20 20:27:00'),
+(37, 91309789, 'Milk - Full Cream', 3.50, 2, 7.00, 'cashOnDelivery', 78.08, '2024-12-20 21:09:36'),
+(38, 91309789, 'Organic Eggs', 2.00, 2, 4.00, 'cashOnDelivery', 78.08, '2024-12-20 21:09:36'),
+(39, 91309789, 'Keyboard', 29.99, 2, 59.98, 'cashOnDelivery', 78.08, '2024-12-20 21:09:36'),
+(40, 24843992, 'Laptop', 700.00, 6, 4200.00, 'paypal', 4666.20, '2024-12-20 21:10:23'),
+(41, 24843992, 'Apples', 3.00, 14, 42.00, 'paypal', 4666.20, '2024-12-20 21:10:23');
 
 -- --------------------------------------------------------
 
@@ -275,7 +288,6 @@ CREATE TABLE `storage` (
 --
 
 INSERT INTO `storage` (`storage_id`, `storage_name`, `capacity`, `used_capacity`) VALUES
-('11', '11', 11, 11),
 ('S001', 'Main Storage', 1000, 750),
 ('S002', 'Secondary Storage', 500, 300),
 ('S003', 'Backup Storage', 300, 150),
@@ -285,7 +297,8 @@ INSERT INTO `storage` (`storage_id`, `storage_name`, `capacity`, `used_capacity`
 ('S007', 'Chemical Storage', 200, 180),
 ('S008', 'Hazmat Storage', 100, 90),
 ('S009', 'Raw Material Storage', 500, 350),
-('S010', 'Finished Goods Storage', 700, 650);
+('S010', 'Finished Goods Storage', 700, 650),
+('S011', 'Raw Material Storage-2', 1000, 500);
 
 -- --------------------------------------------------------
 
@@ -306,11 +319,12 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `full_name`, `email`, `password`, `role`) VALUES
-(0, 'ABDULLAH', 'abdullah@gmail.com', '$2y$10$8.BedMM8yMhMdsym0dYyquxcZq8lZ/4cca0sLy0UuQCUxlhmAI93W', 'editor_Sales'),
-(0, 'ABDULLAH', 'abdullah@gmail.com', '$2y$10$U8wsmTVNSCY4S7iI6irEXuiJjqsfcLJJvn0EHksjHyCRVdbX6Uuni', 'editor_Product'),
-(0, 'ABDULLAH', 'abdullah@gmail.com', '$2y$10$T9uqzsCkkxbvhVVYaWPoUuqTxbbqZtDXzyBleD3rZbRMHshjKqJMO', 'editor_Warehouse'),
-(0, 'ABDULLAH', 'abdullah@gmail.com', '$2y$10$UVrLxihIgtX.ducYGtQYgux0EH1T2wJkIEVYJdF81Wnw.PsTYMFy2', 'customer'),
-(0, 'ABDULLAH', 'abdullah@gmail.com', '$2y$10$DcJXHQVSfefkGCR430dHJu5Q/I4v91pqOeMjYlMMLuMuwKn3aGD4K', 'admin');
+(0, 'ABDULLAH', 'abdullah@gmail.com', '$2y$10$RcY9.npv3MfQs9pvl7YdA.OIGRid/adDLTW2qiTqfnOT3380gcm0S', 'admin'),
+(0, 'ABDULLAH', 'abdullah@gmail.com', '$2y$10$a.8zcXc1S2swLeQLGGeKWeXUrhiVdRD3ot6xGypIh.tF4B8nQugAC', 'Sales Officer'),
+(0, 'ABDULLAH', 'abdullah@gmail.com', '$2y$10$gF1FsFpYzL3dqEkcCn/wyO6aLIix0rD6ZeotRolmv6IquGKhvqja2', 'Product Officer'),
+(0, 'ABDULLAH', 'abdullah@gmail.com', '$2y$10$SVpShAWyzD/OFwcslPRLXureM16osjPsTbFHhlCjkEpBQmXHovQWq', 'Warehouse Manager'),
+(0, 'ABDULLAH', 'abdullah@gmail.com', '$2y$10$9RVpj53OTh6K.rXPnFa9leu5iIeb1EMgaDfMFndx0sXj/wthSmlsK', 'Customer'),
+(0, 'ABDULLAH', 'abdullah@gmail.com', '$2y$10$WFkWv/8lpJFX3kTbcazdjOuHfmT3jon9e2yz5tJdluiDcwZ5549ka', 'Consumer');
 
 -- --------------------------------------------------------
 
@@ -410,7 +424,7 @@ ALTER TABLE `orders`
 -- AUTO_INCREMENT for table `order_items`
 --
 ALTER TABLE `order_items`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
 
 --
 -- AUTO_INCREMENT for table `warehouses`
